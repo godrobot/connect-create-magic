@@ -25,35 +25,25 @@ const ConditionNode = ({ data, selected, id, ...nodeProps }: any) => {
       onStop={() => console.log('Stop condition', id)}
     >
       <Card className={`p-3 min-w-48 border-2 ${selected ? 'border-primary' : 'border-border'} bg-background shadow-md relative`}>
-        {/* All side connectors */}
+        {/* Only left and right connectors for condition nodes */}
         <Handle 
           type="target" 
           position={Position.Left} 
-          className="w-4 h-4 !bg-gray-300 !border-2 !border-gray-400 hover:!bg-gray-400 transition-colors" 
+          className="w-6 h-6 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
         />
         <Handle 
           type="source" 
           position={Position.Right} 
-          className="w-4 h-4 !bg-gray-300 !border-2 !border-gray-400 hover:!bg-gray-400 transition-colors" 
+          className="w-6 h-6 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
           id="true" 
           style={{ top: '25%' }} 
         />
         <Handle 
           type="source" 
           position={Position.Right} 
-          className="w-4 h-4 !bg-gray-300 !border-2 !border-gray-400 hover:!bg-gray-400 transition-colors" 
+          className="w-6 h-6 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
           id="false" 
           style={{ top: '75%' }} 
-        />
-        <Handle 
-          type="target" 
-          position={Position.Top} 
-          className="w-4 h-4 !bg-gray-300 !border-2 !border-gray-400 hover:!bg-gray-400 transition-colors" 
-        />
-        <Handle 
-          type="source" 
-          position={Position.Bottom} 
-          className="w-4 h-4 !bg-gray-300 !border-2 !border-gray-400 hover:!bg-gray-400 transition-colors" 
         />
         
         <div className="flex items-center gap-3">

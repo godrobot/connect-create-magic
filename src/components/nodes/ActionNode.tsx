@@ -47,26 +47,16 @@ const ActionNode = ({ data, selected, type, id, ...nodeProps }: any) => {
       onStop={() => console.log('Stop node', id)}
     >
       <Card className={`p-3 min-w-48 border-2 ${selected ? 'border-primary' : 'border-border'} bg-background shadow-md relative`}>
-        {/* All side connectors for action nodes */}
+        {/* Only left and right connectors for action nodes */}
         <Handle 
           type="target" 
           position={Position.Left} 
-          className="w-4 h-4 !bg-gray-300 !border-2 !border-gray-400 hover:!bg-gray-400 transition-colors" 
+          className="w-6 h-6 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
         />
         <Handle 
           type="source" 
           position={Position.Right} 
-          className="w-4 h-4 !bg-gray-300 !border-2 !border-gray-400 hover:!bg-gray-400 transition-colors" 
-        />
-        <Handle 
-          type="target" 
-          position={Position.Top} 
-          className="w-4 h-4 !bg-gray-300 !border-2 !border-gray-400 hover:!bg-gray-400 transition-colors" 
-        />
-        <Handle 
-          type="source" 
-          position={Position.Bottom} 
-          className="w-4 h-4 !bg-gray-300 !border-2 !border-gray-400 hover:!bg-gray-400 transition-colors" 
+          className="w-6 h-6 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
         />
         
         <div className="flex items-center gap-3">
