@@ -30,7 +30,7 @@ const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) =>
     const connectionData = {
       sourceNodeId: id,
       sourceHandle: 'true',
-      sourcePosition: { x: xPos + 250, y: yPos - 30 }
+      sourcePosition: { x: xPos + 175, y: yPos - 20 }
     };
     
     console.log('Setting pending connection for TRUE branch:', connectionData);
@@ -47,7 +47,7 @@ const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) =>
     const connectionData = {
       sourceNodeId: id,
       sourceHandle: 'false',
-      sourcePosition: { x: xPos + 250, y: yPos + 30 }
+      sourcePosition: { x: xPos + 175, y: yPos + 20 }
     };
     
     console.log('Setting pending connection for FALSE branch:', connectionData);
@@ -67,46 +67,46 @@ const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) =>
         onPlay={() => console.log('Run condition', id)}
         onStop={() => console.log('Stop condition', id)}
       >
-        <Card className={`p-3 min-w-48 border border-gray-300 bg-background shadow-md relative`}>
+        <Card className={`p-2 min-w-32 border border-gray-300 bg-background shadow-md relative`}>
           <Handle 
             type="target" 
             position={Position.Left} 
-            className="w-4 h-4 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
+            className="w-3 h-3 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
             onClick={handleHandleClick}
             onMouseDown={handleHandleClick}
           />
           <Handle 
             type="source" 
             position={Position.Right} 
-            className="w-4 h-4 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
+            className="w-3 h-3 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
             id="true" 
-            style={{ top: '25%' }} 
+            style={{ top: '30%' }} 
             onClick={handleHandleClick}
             onMouseDown={handleHandleClick}
           />
           <Handle 
             type="source" 
             position={Position.Right} 
-            className="w-4 h-4 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
+            className="w-3 h-3 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
             id="false" 
-            style={{ top: '75%' }} 
+            style={{ top: '70%' }} 
             onClick={handleHandleClick}
             onMouseDown={handleHandleClick}
           />
           
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-orange-100 rounded-lg">
-              <GitBranch className="w-4 h-4 text-orange-600" />
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 bg-orange-100 rounded-lg">
+              <GitBranch className="w-3 h-3 text-orange-600" />
             </div>
             <div>
-              <div className="font-medium text-sm">{data.label}</div>
-              <div className="text-xs text-muted-foreground">
+              <div className="font-medium text-xs">{data.label}</div>
+              <div className="text-xs text-muted-foreground leading-tight">
                 {data.config?.operator} {data.config?.value}
               </div>
             </div>
           </div>
           
-          <div className="mt-2 flex justify-between text-xs">
+          <div className="mt-1 flex justify-between text-xs">
             <span className="text-green-600">True</span>
             <span className="text-red-600">False</span>
           </div>
@@ -118,20 +118,20 @@ const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) =>
         <div 
           className="absolute flex items-center z-50"
           style={{ 
-            right: '-20px',
-            top: '25%', 
+            right: '-14px',
+            top: '30%', 
             transform: 'translateY(-50%)',
             pointerEvents: 'none' 
           }}
         >
-          <div className="w-4 h-0.5 bg-gray-400"></div>
+          <div className="w-3 h-0.5 bg-gray-400"></div>
           <button
             onMouseDown={handleAddNodeTrue}
-            className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none ml-1"
+            className="w-3 h-3 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none ml-0.5"
             title="Add node (True branch)"
             style={{ pointerEvents: 'auto' }}
           >
-            <Plus className="w-2.5 h-2.5" />
+            <Plus className="w-2 h-2" />
           </button>
         </div>
       )}
@@ -141,20 +141,20 @@ const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) =>
         <div 
           className="absolute flex items-center z-50"
           style={{ 
-            right: '-20px',
-            top: '75%', 
+            right: '-14px',
+            top: '70%', 
             transform: 'translateY(-50%)',
             pointerEvents: 'none' 
           }}
         >
-          <div className="w-4 h-0.5 bg-gray-400"></div>
+          <div className="w-3 h-0.5 bg-gray-400"></div>
           <button
             onMouseDown={handleAddNodeFalse}
-            className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none ml-1"
+            className="w-3 h-3 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none ml-0.5"
             title="Add node (False branch)"
             style={{ pointerEvents: 'auto' }}
           >
-            <Plus className="w-2.5 h-2.5" />
+            <Plus className="w-2 h-2" />
           </button>
         </div>
       )}

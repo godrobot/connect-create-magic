@@ -28,7 +28,7 @@ const TriggerNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
     
     const connectionData = {
       sourceNodeId: id,
-      sourcePosition: { x: xPos + 250, y: yPos }
+      sourcePosition: { x: xPos + 175, y: yPos }
     };
     
     console.log('Setting pending connection:', connectionData);
@@ -48,30 +48,30 @@ const TriggerNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
         onPlay={() => console.log('Run trigger', id)}
         onStop={() => console.log('Stop trigger', id)}
       >
-        <Card className={`p-3 min-w-48 border border-gray-300 bg-background shadow-md rounded-l-full`}>
+        <Card className={`p-2 min-w-32 border border-gray-300 bg-background shadow-md rounded-l-full`}>
           <Handle 
             type="source" 
             position={Position.Right} 
-            className="w-4 h-4 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
+            className="w-3 h-3 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
             onClick={handleHandleClick}
             onMouseDown={handleHandleClick}
           />
           
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-green-100 rounded-lg">
-              <Zap className="w-4 h-4 text-green-600" />
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 bg-green-100 rounded-lg">
+              <Zap className="w-3 h-3 text-green-600" />
             </div>
             <div>
-              <div className="font-medium text-sm">{data.label}</div>
-              <div className="text-xs text-muted-foreground">
+              <div className="font-medium text-xs">{data.label}</div>
+              <div className="text-xs text-muted-foreground leading-tight">
                 {data.config?.event === 'schedule' ? 'Scheduled' : 'Manual'}
               </div>
             </div>
           </div>
           
           {data.config?.interval && (
-            <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1">
-              <Zap className="w-3 h-3" />
+            <div className="mt-1 text-xs text-muted-foreground flex items-center gap-1">
+              <Zap className="w-2 h-2" />
               Every {data.config.interval}
             </div>
           )}
@@ -84,14 +84,14 @@ const TriggerNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
           className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center z-50"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="w-8 h-0.5 bg-gray-400"></div>
+          <div className="w-6 h-0.5 bg-gray-400"></div>
           <button
             onMouseDown={handleAddNode}
-            className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
+            className="w-3 h-3 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
             title="Add node"
             style={{ pointerEvents: 'auto' }}
           >
-            <Plus className="w-2.5 h-2.5" />
+            <Plus className="w-2 h-2" />
           </button>
         </div>
       )}

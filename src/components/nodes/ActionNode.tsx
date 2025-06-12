@@ -51,7 +51,7 @@ const ActionNode = ({ data, selected, type, id, xPos, yPos, ...nodeProps }: any)
     
     const connectionData = {
       sourceNodeId: id,
-      sourcePosition: { x: xPos + 250, y: yPos }
+      sourcePosition: { x: xPos + 175, y: yPos }
     };
     
     console.log('Setting pending connection:', connectionData);
@@ -71,29 +71,29 @@ const ActionNode = ({ data, selected, type, id, xPos, yPos, ...nodeProps }: any)
         onPlay={() => console.log('Run node', id)}
         onStop={() => console.log('Stop node', id)}
       >
-        <Card className={`p-3 min-w-48 border border-gray-300 bg-background shadow-md relative`}>
+        <Card className={`p-2 min-w-32 border border-gray-300 bg-background shadow-md relative`}>
           <Handle 
             type="target" 
             position={Position.Left} 
-            className="w-4 h-4 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
+            className="w-3 h-3 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
             onClick={handleHandleClick}
             onMouseDown={handleHandleClick}
           />
           <Handle 
             type="source" 
             position={Position.Right} 
-            className="w-4 h-4 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
+            className="w-3 h-3 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
             onClick={handleHandleClick}
             onMouseDown={handleHandleClick}
           />
           
-          <div className="flex items-center gap-3">
-            <div className={`p-2 ${bg} rounded-lg`}>
-              <Icon className={`w-4 h-4 ${color}`} />
+          <div className="flex items-center gap-2">
+            <div className={`p-1.5 ${bg} rounded-lg`}>
+              <Icon className={`w-3 h-3 ${color}`} />
             </div>
             <div>
-              <div className="font-medium text-sm">{data.label}</div>
-              <div className="text-xs text-muted-foreground">
+              <div className="font-medium text-xs">{data.label}</div>
+              <div className="text-xs text-muted-foreground leading-tight">
                 {type === 'email' && data.config?.to && `To: ${data.config.to}`}
                 {type === 'database' && data.config?.table && `Table: ${data.config.table}`}
                 {type === 'api' && data.config?.method && `${data.config.method} Request`}
@@ -109,14 +109,14 @@ const ActionNode = ({ data, selected, type, id, xPos, yPos, ...nodeProps }: any)
           className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center z-50"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="w-8 h-0.5 bg-gray-400"></div>
+          <div className="w-6 h-0.5 bg-gray-400"></div>
           <button
             onMouseDown={handleAddNode}
-            className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
+            className="w-3 h-3 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
             title="Add node"
             style={{ pointerEvents: 'auto' }}
           >
-            <Plus className="w-2.5 h-2.5" />
+            <Plus className="w-2 h-2" />
           </button>
         </div>
       )}
