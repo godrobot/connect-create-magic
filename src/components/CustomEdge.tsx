@@ -107,14 +107,14 @@ const CustomEdge: React.FC<EdgeProps> = ({
           >
             <div className="flex gap-1 pointer-events-auto">
               <button
-                className="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-xs transition-colors shadow-md"
+                className="w-5 h-5 bg-gray-600 hover:bg-gray-700 text-white rounded-full flex items-center justify-center transition-colors border border-gray-400"
                 onClick={onAddNode}
                 title="Add node"
               >
                 <Plus className="w-3 h-3" />
               </button>
               <button
-                className="w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-xs transition-colors shadow-md"
+                className="w-5 h-5 bg-gray-600 hover:bg-gray-700 text-white rounded-full flex items-center justify-center transition-colors border border-gray-400"
                 onClick={onDeleteEdge}
                 title="Delete connection"
               >
