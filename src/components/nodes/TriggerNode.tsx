@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Handle, Position } from '@xyflow/react';
-import { Action } from 'lucide-react';
+import { Activity } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import NodeHoverActions from '../NodeHoverActions';
 import { useWorkflow } from '../../context/WorkflowContext';
@@ -24,7 +24,7 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
       onPlay={() => console.log('Run trigger', id)}
       onStop={() => console.log('Stop trigger', id)}
     >
-      <Card className={`p-3 min-w-48 border-2 ${selected ? 'border-primary' : 'border-gray-300'} bg-background shadow-md rounded-l-full`}>
+      <Card className={`p-3 min-w-48 border-2 ${selected ? 'border-primary' : 'border-gray-200'} bg-background shadow-md rounded-l-full`}>
         {/* Only right connector for triggers */}
         <Handle 
           type="source" 
@@ -34,7 +34,7 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
         
         <div className="flex items-center gap-3">
           <div className="p-2 bg-green-100 rounded-lg">
-            <Action className="w-4 h-4 text-green-600" />
+            <Activity className="w-4 h-4 text-green-600" />
           </div>
           <div>
             <div className="font-medium text-sm">{data.label}</div>
@@ -46,7 +46,7 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
         
         {data.config?.interval && (
           <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1">
-            <Action className="w-3 h-3" />
+            <Activity className="w-3 h-3" />
             Every {data.config.interval}
           </div>
         )}
