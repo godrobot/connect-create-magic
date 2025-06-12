@@ -36,11 +36,19 @@ const CustomEdge: React.FC<EdgeProps> = ({
     targetPosition,
   });
 
-  const onDeleteEdge = () => {
+  const onDeleteEdge = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    console.log('Deleting edge:', id);
     setEdges((edges) => edges.filter((edge) => edge.id !== id));
   };
 
-  const onAddNode = () => {
+  const onAddNode = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    console.log('Adding node from edge:', id);
+    
     // First delete the current edge
     setEdges((edges) => edges.filter((edge) => edge.id !== id));
     
@@ -86,21 +94,26 @@ const CustomEdge: React.FC<EdgeProps> = ({
       {isHovered && (
         <EdgeLabelRenderer>
           <div
-            className="absolute pointer-events-none"
+            className="absolute"
             style={{
               transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+              pointerEvents: 'auto'
             }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
-            <div className="flex gap-1 pointer-events-auto">
+            <div className="flex gap-1">
               <button
-                className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors"
+                className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer"
+                onMouseDown={onAddNode}
                 onClick={onAddNode}
                 title="Add node"
               >
                 <Plus className="w-2.5 h-2.5" />
               </button>
               <button
-                className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors"
+                className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer"
+                onMouseDown={onDeleteEdge}
                 onClick={onDeleteEdge}
                 title="Delete connection"
               >
