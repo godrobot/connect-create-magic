@@ -96,18 +96,16 @@ const CustomEdge: React.FC<EdgeProps> = ({
         style={{ cursor: 'pointer' }}
       />
       
+      {/* Only render buttons when hovered */}
       {isHovered && (
         <EdgeLabelRenderer>
           <div
-            className="absolute"
+            className="absolute pointer-events-none"
             style={{
               transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-              pointerEvents: 'auto'
             }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
           >
-            <div className="flex gap-1">
+            <div className="flex gap-1 pointer-events-auto">
               <button
                 className="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-xs transition-colors shadow-md"
                 onClick={onAddNode}
