@@ -24,17 +24,17 @@ const WebhookNode = ({ data, selected, id, ...nodeProps }: any) => {
       onPlay={() => console.log('Run webhook', id)}
       onStop={() => console.log('Stop webhook', id)}
     >
-      <Card className={`p-3 min-w-48 border-2 ${selected ? 'border-primary' : 'border-border'} bg-background shadow-md relative`}>
+      <Card className={`p-3 min-w-48 border-2 ${selected ? 'border-primary' : 'border-gray-300'} bg-background shadow-md relative`}>
         {/* Only left and right connectors for webhook nodes */}
         <Handle 
           type="target" 
           position={Position.Left} 
-          className="w-6 h-6 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
+          className="w-3 h-3 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
         />
         <Handle 
           type="source" 
           position={Position.Right} 
-          className="w-6 h-6 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
+          className="w-3 h-3 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
         />
         
         <div className="flex items-center gap-3">

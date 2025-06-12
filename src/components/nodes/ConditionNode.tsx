@@ -24,24 +24,24 @@ const ConditionNode = ({ data, selected, id, ...nodeProps }: any) => {
       onPlay={() => console.log('Run condition', id)}
       onStop={() => console.log('Stop condition', id)}
     >
-      <Card className={`p-3 min-w-48 border-2 ${selected ? 'border-primary' : 'border-border'} bg-background shadow-md relative`}>
+      <Card className={`p-3 min-w-48 border-2 ${selected ? 'border-primary' : 'border-gray-300'} bg-background shadow-md relative`}>
         {/* Only left and right connectors for condition nodes */}
         <Handle 
           type="target" 
           position={Position.Left} 
-          className="w-6 h-6 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
+          className="w-3 h-3 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
         />
         <Handle 
           type="source" 
           position={Position.Right} 
-          className="w-6 h-6 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
+          className="w-3 h-3 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
           id="true" 
           style={{ top: '25%' }} 
         />
         <Handle 
           type="source" 
           position={Position.Right} 
-          className="w-6 h-6 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
+          className="w-3 h-3 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
           id="false" 
           style={{ top: '75%' }} 
         />

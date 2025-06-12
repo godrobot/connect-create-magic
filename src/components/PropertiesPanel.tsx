@@ -217,7 +217,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
               <Label htmlFor="label">Label</Label>
               <Input
                 id="label"
-                value={selectedNode.data.label}
+                value={selectedNode.data.label || ''}
                 onChange={(e) => {
                   if (selectedNode) {
                     setNodes(prev => prev.map(node => 
