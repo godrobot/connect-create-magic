@@ -1,4 +1,3 @@
-
 import React, { useCallback } from 'react';
 import {
   ReactFlow,
@@ -72,7 +71,7 @@ const WorkflowCanvas = () => {
         ...params,
         id: `edge-${Date.now()}`,
         type: 'smoothstep',
-        animated: true,
+        animated: false, // Remove animation
         source: params.source!,
         target: params.target!
       };
