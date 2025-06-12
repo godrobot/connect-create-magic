@@ -6,10 +6,12 @@ import { Card } from '@/components/ui/card';
 
 const ConditionNode = ({ data, selected }: any) => {
   return (
-    <Card className={`p-3 min-w-48 border-2 ${selected ? 'border-primary' : 'border-border'} bg-background shadow-md`}>
+    <Card className={`p-3 min-w-48 border-2 ${selected ? 'border-primary' : 'border-border'} bg-background shadow-md relative`}>
       <Handle type="target" position={Position.Left} className="w-3 h-3" />
       <Handle type="source" position={Position.Right} className="w-3 h-3" id="true" style={{ top: '25%' }} />
       <Handle type="source" position={Position.Right} className="w-3 h-3" id="false" style={{ top: '75%' }} />
+      <Handle type="target" position={Position.Top} className="w-3 h-3" />
+      <Handle type="source" position={Position.Bottom} className="w-3 h-3" />
       
       <div className="flex items-center gap-3">
         <div className="p-2 bg-orange-100 rounded-lg">

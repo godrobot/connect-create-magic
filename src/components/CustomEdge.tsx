@@ -20,7 +20,7 @@ const CustomEdge: React.FC<EdgeProps> = ({
   style = {},
   markerEnd,
 }) => {
-  const { setEdges } = useReactFlow();
+  const { setEdges, setNodes } = useReactFlow();
   const [isHovered, setIsHovered] = useState(false);
 
   const [edgePath, labelX, labelY] = getBezierPath({
@@ -37,8 +37,42 @@ const CustomEdge: React.FC<EdgeProps> = ({
   };
 
   const onAddNode = () => {
-    // This would add a node in the middle of the edge
-    console.log('Add node to edge:', id);
+    // Add a new action node in the middle of the edge
+    const newNodeId = `action-${Date.now()}`;
+    const newNode = {
+      id: newNodeId,
+      type: 'action',
+      position: { x: labelX - 75, y: labelY - 25 },
+      data: {
+        label: 'Action',
+        config: { operation: 'create' }
+      }
+    };
+
+    setNodes((nodes) => [...nodes, newNode]);
+    
+    // Update edges to connect through the new node
+    setEdges((edges) => {
+      const currentEdge = edges.find(edge => edge.id === id);
+      if (!currentEdge) return edges;
+      
+      return edges
+        .filter(edge => edge.id !== id)
+        .concat([
+          {
+            id: `edge-${currentEdge.source}-${newNodeId}`,
+            source: currentEdge.source,
+            target: newNodeId,
+            type: 'smoothstep'
+          },
+          {
+            id: `edge-${newNodeId}-${currentEdge.target}`,
+            source: newNodeId,
+            target: currentEdge.target,
+            type: 'smoothstep'
+          }
+        ]);
+    });
   };
 
   return (
