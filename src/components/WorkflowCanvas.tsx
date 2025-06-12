@@ -10,7 +10,7 @@ import {
   useEdgesState,
   ConnectionMode,
   Node,
-  Edge
+  BackgroundVariant
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useWorkflow } from '../context/WorkflowContext';
@@ -34,20 +34,29 @@ const WorkflowCanvas = () => {
   const [localNodes, setLocalNodes, onNodesChange] = useNodesState(nodes);
   const [localEdges, setLocalEdges, onEdgesChange] = useEdgesState(edges);
 
+  // Sync nodes from context to local state only when context changes
   React.useEffect(() => {
     setLocalNodes(nodes);
   }, [nodes, setLocalNodes]);
 
+  // Sync edges from context to local state only when context changes
   React.useEffect(() => {
     setLocalEdges(edges);
   }, [edges, setLocalEdges]);
 
+  // Sync local state changes back to context (debounced)
   React.useEffect(() => {
-    setNodes(localNodes);
+    const timeoutId = setTimeout(() => {
+      setNodes(localNodes);
+    }, 100);
+    return () => clearTimeout(timeoutId);
   }, [localNodes, setNodes]);
 
   React.useEffect(() => {
-    setEdges(localEdges);
+    const timeoutId = setTimeout(() => {
+      setEdges(localEdges);
+    }, 100);
+    return () => clearTimeout(timeoutId);
   }, [localEdges, setEdges]);
 
   const onConnect = useCallback(
@@ -89,7 +98,7 @@ const WorkflowCanvas = () => {
         fitView
         className="bg-gray-50"
       >
-        <Background variant="dots" gap={20} size={1} />
+        <Background variant={BackgroundVariant.Dots} gap={20} size={1} />
         <Controls />
       </ReactFlow>
     </div>

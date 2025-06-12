@@ -1,206 +1,195 @@
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Settings, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import { useWorkflow } from '../context/WorkflowContext';
 
-const PropertiesPanel = () => {
-  const { selectedNode, setSelectedNode, setNodes } = useWorkflow();
+interface NodeConfig {
+  url?: string;
+  method?: string;
+  to?: string;
+  subject?: string;
+  body?: string;
+  operator?: string;
+  value?: string;
+  event?: string;
+  interval?: string;
+  operation?: string;
+  table?: string;
+  headers?: Record<string, string>;
+}
 
-  const updateNodeData = (key: string, value: any) => {
+const PropertiesPanel = () => {
+  const { selectedNode, setNodes } = useWorkflow();
+
+  const updateNodeData = (updates: Partial<NodeConfig>) => {
     if (!selectedNode) return;
     
-    setNodes((nodes) =>
-      nodes.map((node) =>
-        node.id === selectedNode.id
-          ? {
-              ...node,
-              data: {
-                ...node.data,
-                config: {
-                  ...node.data.config,
-                  [key]: value
-                }
-              }
-            }
-          : node
-      )
-    );
+    setNodes(prev => prev.map(node => 
+      node.id === selectedNode.id 
+        ? { 
+            ...node, 
+            data: { 
+              ...node.data, 
+              config: { 
+                ...(node.data.config as NodeConfig || {}), 
+                ...updates 
+              } 
+            } 
+          }
+        : node
+    ));
   };
 
   if (!selectedNode) {
     return (
-      <Card className="w-80 h-full rounded-none border-l border-border">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Settings className="w-5 h-5" />
-            Properties
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-center text-muted-foreground py-8">
-            Select a node to view its properties
-          </div>
-        </CardContent>
-      </Card>
+      <div className="w-80 border-l bg-background p-4">
+        <div className="text-center text-muted-foreground">
+          Select a node to edit properties
+        </div>
+      </div>
     );
   }
 
-  const renderConfigFields = () => {
-    const config = selectedNode.data.config || {};
-    
+  const config = (selectedNode.data.config as NodeConfig) || {};
+
+  const renderWebhookProperties = () => (
+    <div className="space-y-4">
+      <div>
+        <Label>URL</Label>
+        <Input
+          value={config.url || ''}
+          onChange={(e) => updateNodeData({ url: e.target.value })}
+          placeholder="https://api.example.com/webhook"
+        />
+      </div>
+      <div>
+        <Label>Method</Label>
+        <Select value={config.method || 'POST'} onValueChange={(value) => updateNodeData({ method: value })}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="GET">GET</SelectItem>
+            <SelectItem value="POST">POST</SelectItem>
+            <SelectItem value="PUT">PUT</SelectItem>
+            <SelectItem value="DELETE">DELETE</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  );
+
+  const renderEmailProperties = () => (
+    <div className="space-y-4">
+      <div>
+        <Label>To</Label>
+        <Input
+          value={config.to || ''}
+          onChange={(e) => updateNodeData({ to: e.target.value })}
+          placeholder="recipient@example.com"
+        />
+      </div>
+      <div>
+        <Label>Subject</Label>
+        <Input
+          value={config.subject || ''}
+          onChange={(e) => updateNodeData({ subject: e.target.value })}
+          placeholder="Email subject"
+        />
+      </div>
+      <div>
+        <Label>Body</Label>
+        <Textarea
+          value={config.body || ''}
+          onChange={(e) => updateNodeData({ body: e.target.value })}
+          placeholder="Email content"
+        />
+      </div>
+    </div>
+  );
+
+  const renderConditionProperties = () => (
+    <div className="space-y-4">
+      <div>
+        <Label>Operator</Label>
+        <Select value={config.operator || 'equals'} onValueChange={(value) => updateNodeData({ operator: value })}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="equals">Equals</SelectItem>
+            <SelectItem value="not_equals">Not Equals</SelectItem>
+            <SelectItem value="greater_than">Greater Than</SelectItem>
+            <SelectItem value="less_than">Less Than</SelectItem>
+            <SelectItem value="contains">Contains</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div>
+        <Label>Value</Label>
+        <Input
+          value={config.value || ''}
+          onChange={(e) => updateNodeData({ value: e.target.value })}
+          placeholder="Comparison value"
+        />
+      </div>
+    </div>
+  );
+
+  const renderTriggerProperties = () => (
+    <div className="space-y-4">
+      <div>
+        <Label>Event Type</Label>
+        <Select value={config.event || 'manual'} onValueChange={(value) => updateNodeData({ event: value })}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="manual">Manual</SelectItem>
+            <SelectItem value="schedule">Schedule</SelectItem>
+            <SelectItem value="webhook">Webhook</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      {config.event === 'schedule' && (
+        <div>
+          <Label>Interval</Label>
+          <Input
+            value={config.interval || ''}
+            onChange={(e) => updateNodeData({ interval: e.target.value })}
+            placeholder="5m, 1h, 1d"
+          />
+        </div>
+      )}
+    </div>
+  );
+
+  const getPropertiesContent = () => {
     switch (selectedNode.type) {
       case 'webhook':
-        return (
-          <>
-            <div className="space-y-2">
-              <Label htmlFor="webhook-url">Webhook URL</Label>
-              <Input
-                id="webhook-url"
-                value={config.url || ''}
-                onChange={(e) => updateNodeData('url', e.target.value)}
-                placeholder="https://example.com/webhook"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="webhook-method">Method</Label>
-              <Select
-                value={config.method || 'POST'}
-                onValueChange={(value) => updateNodeData('method', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="GET">GET</SelectItem>
-                  <SelectItem value="POST">POST</SelectItem>
-                  <SelectItem value="PUT">PUT</SelectItem>
-                  <SelectItem value="DELETE">DELETE</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </>
-        );
-      
+        return renderWebhookProperties();
       case 'email':
-        return (
-          <>
-            <div className="space-y-2">
-              <Label htmlFor="email-to">To</Label>
-              <Input
-                id="email-to"
-                value={config.to || ''}
-                onChange={(e) => updateNodeData('to', e.target.value)}
-                placeholder="recipient@example.com"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email-subject">Subject</Label>
-              <Input
-                id="email-subject"
-                value={config.subject || ''}
-                onChange={(e) => updateNodeData('subject', e.target.value)}
-                placeholder="Email subject"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email-body">Body</Label>
-              <Textarea
-                id="email-body"
-                value={config.body || ''}
-                onChange={(e) => updateNodeData('body', e.target.value)}
-                placeholder="Email content..."
-                rows={4}
-              />
-            </div>
-          </>
-        );
-      
+        return renderEmailProperties();
       case 'condition':
-        return (
-          <>
-            <div className="space-y-2">
-              <Label htmlFor="condition-operator">Operator</Label>
-              <Select
-                value={config.operator || 'equals'}
-                onValueChange={(value) => updateNodeData('operator', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="equals">Equals</SelectItem>
-                  <SelectItem value="not_equals">Not Equals</SelectItem>
-                  <SelectItem value="contains">Contains</SelectItem>
-                  <SelectItem value="greater_than">Greater Than</SelectItem>
-                  <SelectItem value="less_than">Less Than</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="condition-value">Value</Label>
-              <Input
-                id="condition-value"
-                value={config.value || ''}
-                onChange={(e) => updateNodeData('value', e.target.value)}
-                placeholder="Comparison value"
-              />
-            </div>
-          </>
-        );
-      
+        return renderConditionProperties();
+      case 'trigger':
+        return renderTriggerProperties();
       default:
-        return (
-          <div className="space-y-2">
-            <Label htmlFor="node-name">Node Name</Label>
-            <Input
-              id="node-name"
-              value={selectedNode.data.label || ''}
-              onChange={(e) => updateNodeData('label', e.target.value)}
-              placeholder="Node name"
-            />
-          </div>
-        );
+        return <div className="text-muted-foreground">No properties available</div>;
     }
   };
 
   return (
-    <Card className="w-80 h-full rounded-none border-l border-border">
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <Settings className="w-5 h-5" />
-            Properties
-          </CardTitle>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setSelectedNode(null)}
-          >
-            <X className="w-4 h-4" />
-          </Button>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <ScrollArea className="h-full">
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label>Node Type</Label>
-              <div className="text-sm text-muted-foreground capitalize">
-                {selectedNode.type}
-              </div>
-            </div>
-            {renderConfigFields()}
-          </div>
-        </ScrollArea>
-      </CardContent>
-    </Card>
+    <div className="w-80 border-l bg-background p-4">
+      <Card className="p-4">
+        <h3 className="font-semibold mb-4">{selectedNode.data.label} Properties</h3>
+        {getPropertiesContent()}
+      </Card>
+    </div>
   );
 };
 
