@@ -82,35 +82,39 @@ const CustomEdge: React.FC<EdgeProps> = ({
       <BaseEdge 
         path={edgePath} 
         markerEnd={markerEnd} 
-        style={{ ...style, stroke: '#9CA3AF' }}
+        style={{ ...style, stroke: '#9CA3AF', strokeWidth: 2 }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       />
-      {isHovered && (
-        <EdgeLabelRenderer>
-          <div
-            className="absolute pointer-events-all flex gap-1"
-            style={{
-              transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
-            }}
-          >
-            <button
-              className="w-4 h-4 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-xs transition-colors"
-              onClick={onAddNode}
-              title="Add node"
-            >
-              <Plus className="w-2 h-2" />
-            </button>
-            <button
-              className="w-4 h-4 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-xs transition-colors"
-              onClick={onDeleteEdge}
-              title="Delete connection"
-            >
-              <X className="w-2 h-2" />
-            </button>
-          </div>
-        </EdgeLabelRenderer>
-      )}
+      <EdgeLabelRenderer>
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+          }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          {isHovered && (
+            <div className="flex gap-1 pointer-events-auto">
+              <button
+                className="w-4 h-4 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-xs transition-colors"
+                onClick={onAddNode}
+                title="Add node"
+              >
+                <Plus className="w-2 h-2" />
+              </button>
+              <button
+                className="w-4 h-4 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-xs transition-colors"
+                onClick={onDeleteEdge}
+                title="Delete connection"
+              >
+                <X className="w-2 h-2" />
+              </button>
+            </div>
+          )}
+        </div>
+      </EdgeLabelRenderer>
     </>
   );
 };
