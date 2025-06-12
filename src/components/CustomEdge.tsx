@@ -95,18 +95,18 @@ const CustomEdge: React.FC<EdgeProps> = ({
             }}
           >
             <button
-              className="w-4 h-4 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-xs transition-colors"
-              onClick={onDeleteEdge}
-              title="Delete connection"
-            >
-              <X className="w-2 h-2" />
-            </button>
-            <button
               className="w-4 h-4 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-xs transition-colors"
               onClick={onAddNode}
               title="Add node"
             >
               <Plus className="w-2 h-2" />
+            </button>
+            <button
+              className="w-4 h-4 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-xs transition-colors"
+              onClick={onDeleteEdge}
+              title="Delete connection"
+            >
+              <X className="w-2 h-2" />
             </button>
           </div>
         </EdgeLabelRenderer>
