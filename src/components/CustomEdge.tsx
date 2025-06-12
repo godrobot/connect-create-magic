@@ -23,8 +23,8 @@ const CustomEdge: React.FC<EdgeProps> = ({
   source,
   target,
 }) => {
-  const { setEdges, setNodes } = useReactFlow();
-  const { setPendingConnection, nodes } = useWorkflow();
+  const { setEdges } = useReactFlow();
+  const { setPendingConnection, nodes, setSelectedNode } = useWorkflow();
   const [isHovered, setIsHovered] = useState(false);
 
   const [edgePath, labelX, labelY] = getBezierPath({
@@ -41,11 +41,14 @@ const CustomEdge: React.FC<EdgeProps> = ({
   };
 
   const onAddNode = () => {
+    // First delete the current edge
+    setEdges((edges) => edges.filter((edge) => edge.id !== id));
+    
     // Find the source node to get its position
     const sourceNode = nodes.find(node => node.id === source);
     if (!sourceNode) return;
 
-    // Set up pending connection from the source node
+    // Set up pending connection from the source node to trigger node palette
     const connectionData = {
       sourceNodeId: source,
       sourcePosition: { x: sourceNode.position.x + 250, y: sourceNode.position.y }
@@ -53,6 +56,7 @@ const CustomEdge: React.FC<EdgeProps> = ({
     
     console.log('Setting pending connection from edge plus:', connectionData);
     setPendingConnection(connectionData);
+    setSelectedNode(null);
   };
 
   return (
@@ -78,7 +82,7 @@ const CustomEdge: React.FC<EdgeProps> = ({
         style={{ cursor: 'pointer' }}
       />
       
-      {/* Only render our custom buttons when hovered - no other icons should appear */}
+      {/* Only render our custom buttons when hovered */}
       {isHovered && (
         <EdgeLabelRenderer>
           <div
