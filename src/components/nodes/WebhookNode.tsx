@@ -28,7 +28,7 @@ const WebhookNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
     
     const connectionData = {
       sourceNodeId: id,
-      sourcePosition: { x: xPos + 175, y: yPos }
+      sourcePosition: { x: xPos + 140, y: yPos }
     };
     
     console.log('Setting pending connection:', connectionData);
@@ -48,21 +48,21 @@ const WebhookNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
         onPlay={() => console.log('Run webhook', id)}
         onStop={() => console.log('Stop webhook', id)}
       >
-        <Card className={`p-2 min-w-32 border border-gray-300 bg-background shadow-md rounded-l-full`}>
+        <Card className={`p-1 min-w-20 border border-gray-300 bg-background shadow-sm rounded-l-full`}>
           <Handle 
             type="source" 
             position={Position.Right} 
-            className="w-3 h-3 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
+            className="w-2 h-2 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
             onClick={handleHandleClick}
             onMouseDown={handleHandleClick}
           />
           
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-blue-100 rounded-lg">
-              <Webhook className="w-3 h-3 text-blue-600" />
+          <div className="flex items-center gap-1">
+            <div className="p-0.5 bg-blue-100 rounded-md">
+              <Webhook className="w-2 h-2 text-blue-600" />
             </div>
             <div>
-              <div className="font-medium text-xs">{data.label}</div>
+              <div className="font-medium text-xs leading-tight">{data.label}</div>
               <div className="text-xs text-muted-foreground leading-tight">
                 {data.config?.method || 'POST'} {data.config?.url ? 'Configured' : 'Not configured'}
               </div>
@@ -77,14 +77,14 @@ const WebhookNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
           className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center z-50"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="w-6 h-0.5 bg-gray-400"></div>
+          <div className="w-4 h-0.5 bg-gray-400"></div>
           <button
             onMouseDown={handleAddNode}
-            className="w-3 h-3 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
+            className="w-2 h-2 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
             title="Add node"
             style={{ pointerEvents: 'auto' }}
           >
-            <Plus className="w-2 h-2" />
+            <Plus className="w-1.5 h-1.5" />
           </button>
         </div>
       )}
