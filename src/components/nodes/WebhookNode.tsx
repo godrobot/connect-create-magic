@@ -61,7 +61,7 @@ const WebhookNode = ({ data, selected, id, ...nodeProps }: any) => {
 
         {/* Connection line with plus icon extending from the right */}
         <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center pointer-events-none">
-          <div className="w-8 h-0.5 bg-gray-300"></div>
+          <div className="w-8 h-0.5 bg-gray-400"></div>
           <button
             onClick={handleAddNode}
             className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors pointer-events-auto"
