@@ -39,44 +39,44 @@ const NodeHoverActions: React.FC<NodeHoverActionsProps> = ({
             <Button
               size="sm"
               variant="ghost"
-              className="h-8 w-8 p-0 hover:bg-accent"
+              className="h-6 w-6 p-0 hover:bg-accent"
               onClick={onPlay}
               title="Run"
             >
-              <Play className="w-4 h-4" />
+              <Play className="w-3 h-3" />
             </Button>
           )}
           {onStop && (
             <Button
               size="sm"
               variant="ghost"
-              className="h-8 w-8 p-0 hover:bg-accent"
+              className="h-6 w-6 p-0 hover:bg-accent"
               onClick={onStop}
               title="Stop"
             >
-              <Square className="w-4 h-4" />
+              <Square className="w-3 h-3" />
             </Button>
           )}
           {onSettings && (
             <Button
               size="sm"
               variant="ghost"
-              className="h-8 w-8 p-0 hover:bg-accent"
+              className="h-6 w-6 p-0 hover:bg-accent"
               onClick={onSettings}
               title="Settings"
             >
-              <Settings className="w-4 h-4" />
+              <Settings className="w-3 h-3" />
             </Button>
           )}
           {onDelete && (
             <Button
               size="sm"
               variant="ghost"
-              className="h-8 w-8 p-0 hover:bg-destructive hover:text-destructive-foreground"
+              className="h-6 w-6 p-0 hover:bg-destructive hover:text-destructive-foreground"
               onClick={onDelete}
               title="Delete"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="w-3 h-3" />
             </Button>
           )}
         </div>
