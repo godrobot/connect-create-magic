@@ -33,6 +33,10 @@ const TriggerNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
     setSelectedNode(null);
   };
 
+  const handleHandleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <div className="relative">
       <NodeHoverActions 
@@ -46,6 +50,8 @@ const TriggerNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
             type="source" 
             position={Position.Right} 
             className="w-4 h-4 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
+            onClick={handleHandleClick}
+            onMouseDown={handleHandleClick}
           />
           
           <div className="flex items-center gap-3">

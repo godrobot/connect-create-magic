@@ -33,6 +33,10 @@ const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) =>
     setSelectedNode(null);
   };
 
+  const handleHandleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <div className="relative">
       <NodeHoverActions 
@@ -46,6 +50,8 @@ const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) =>
             type="target" 
             position={Position.Left} 
             className="w-4 h-4 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
+            onClick={handleHandleClick}
+            onMouseDown={handleHandleClick}
           />
           <Handle 
             type="source" 
@@ -53,6 +59,8 @@ const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) =>
             className="w-4 h-4 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
             id="true" 
             style={{ top: '25%' }} 
+            onClick={handleHandleClick}
+            onMouseDown={handleHandleClick}
           />
           <Handle 
             type="source" 
@@ -60,6 +68,8 @@ const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) =>
             className="w-4 h-4 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
             id="false" 
             style={{ top: '75%' }} 
+            onClick={handleHandleClick}
+            onMouseDown={handleHandleClick}
           />
           
           <div className="flex items-center gap-3">
