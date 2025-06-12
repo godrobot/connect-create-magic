@@ -1,8 +1,10 @@
+
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { Node, Edge } from '@xyflow/react';
 
 interface PendingConnection {
   sourceNodeId: string;
+  sourceHandle?: string;
   sourcePosition: { x: number; y: number };
 }
 
@@ -88,6 +90,7 @@ export const WorkflowProvider: React.FC<WorkflowProviderProps> = ({ children }) 
       id: `edge-${pendingConnection.sourceNodeId}-${newNodeId}`,
       source: pendingConnection.sourceNodeId,
       target: newNodeId,
+      sourceHandle: pendingConnection.sourceHandle,
       type: 'smoothstep',
       style: { stroke: '#9CA3AF' }
     };

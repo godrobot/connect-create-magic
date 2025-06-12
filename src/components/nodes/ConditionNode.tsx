@@ -9,8 +9,9 @@ import { useWorkflow } from '../../context/WorkflowContext';
 const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
   const { setNodes, setSelectedNode, setPendingConnection, edges } = useWorkflow();
 
-  // Check if this node has any outgoing connections
-  const hasOutgoingConnection = edges.some(edge => edge.source === id);
+  // Check if specific handles have outgoing connections
+  const hasTrueConnection = edges.some(edge => edge.source === id && edge.sourceHandle === 'true');
+  const hasFalseConnection = edges.some(edge => edge.source === id && edge.sourceHandle === 'false');
 
   const handleDelete = () => {
     setNodes(prev => prev.filter(node => node.id !== id));
@@ -20,18 +21,36 @@ const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) =>
     setSelectedNode({ id, data, type: 'condition', xPos, yPos, ...nodeProps });
   };
 
-  const handleAddNode = (e: React.MouseEvent) => {
+  const handleAddNodeTrue = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
-    console.log('Plus icon clicked for node:', id, 'at position:', { x: xPos, y: yPos });
+    console.log('Plus icon clicked for TRUE branch of node:', id);
     
     const connectionData = {
       sourceNodeId: id,
-      sourcePosition: { x: xPos + 250, y: yPos }
+      sourceHandle: 'true',
+      sourcePosition: { x: xPos + 250, y: yPos - 30 }
     };
     
-    console.log('Setting pending connection:', connectionData);
+    console.log('Setting pending connection for TRUE branch:', connectionData);
+    setPendingConnection(connectionData);
+    setSelectedNode(null);
+  };
+
+  const handleAddNodeFalse = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    console.log('Plus icon clicked for FALSE branch of node:', id);
+    
+    const connectionData = {
+      sourceNodeId: id,
+      sourceHandle: 'false',
+      sourcePosition: { x: xPos + 250, y: yPos + 30 }
+    };
+    
+    console.log('Setting pending connection for FALSE branch:', connectionData);
     setPendingConnection(connectionData);
     setSelectedNode(null);
   };
@@ -94,17 +113,43 @@ const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) =>
         </Card>
       </NodeHoverActions>
 
-      {/* Connection line with plus icon - only show if no outgoing connections */}
-      {!hasOutgoingConnection && (
+      {/* Connection line with plus icon for TRUE branch - only show if no true connection */}
+      {!hasTrueConnection && (
         <div 
-          className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center z-50"
-          style={{ pointerEvents: 'none' }}
+          className="absolute right-0 flex items-center z-50"
+          style={{ 
+            top: '25%', 
+            transform: 'translateY(-50%)',
+            pointerEvents: 'none' 
+          }}
         >
           <div className="w-8 h-0.5 bg-gray-400"></div>
           <button
-            onMouseDown={handleAddNode}
+            onMouseDown={handleAddNodeTrue}
             className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
-            title="Add node"
+            title="Add node (True branch)"
+            style={{ pointerEvents: 'auto' }}
+          >
+            <Plus className="w-2.5 h-2.5" />
+          </button>
+        </div>
+      )}
+
+      {/* Connection line with plus icon for FALSE branch - only show if no false connection */}
+      {!hasFalseConnection && (
+        <div 
+          className="absolute right-0 flex items-center z-50"
+          style={{ 
+            top: '75%', 
+            transform: 'translateY(-50%)',
+            pointerEvents: 'none' 
+          }}
+        >
+          <div className="w-8 h-0.5 bg-gray-400"></div>
+          <button
+            onMouseDown={handleAddNodeFalse}
+            className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
+            title="Add node (False branch)"
             style={{ pointerEvents: 'auto' }}
           >
             <Plus className="w-2.5 h-2.5" />
