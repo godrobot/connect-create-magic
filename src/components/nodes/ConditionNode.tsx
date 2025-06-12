@@ -116,17 +116,18 @@ const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) =>
       {/* Connection line with plus icon for TRUE branch - only show if no true connection */}
       {!hasTrueConnection && (
         <div 
-          className="absolute right-0 flex items-center z-50"
+          className="absolute flex items-center z-50"
           style={{ 
+            right: '-20px',
             top: '25%', 
             transform: 'translateY(-50%)',
             pointerEvents: 'none' 
           }}
         >
-          <div className="w-8 h-0.5 bg-gray-400"></div>
+          <div className="w-4 h-0.5 bg-gray-400"></div>
           <button
             onMouseDown={handleAddNodeTrue}
-            className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
+            className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none ml-1"
             title="Add node (True branch)"
             style={{ pointerEvents: 'auto' }}
           >
@@ -138,17 +139,18 @@ const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) =>
       {/* Connection line with plus icon for FALSE branch - only show if no false connection */}
       {!hasFalseConnection && (
         <div 
-          className="absolute right-0 flex items-center z-50"
+          className="absolute flex items-center z-50"
           style={{ 
+            right: '-20px',
             top: '75%', 
             transform: 'translateY(-50%)',
             pointerEvents: 'none' 
           }}
         >
-          <div className="w-8 h-0.5 bg-gray-400"></div>
+          <div className="w-4 h-0.5 bg-gray-400"></div>
           <button
             onMouseDown={handleAddNodeFalse}
-            className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
+            className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none ml-1"
             title="Add node (False branch)"
             style={{ pointerEvents: 'auto' }}
           >
