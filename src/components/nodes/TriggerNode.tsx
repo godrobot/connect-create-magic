@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Handle, Position } from '@xyflow/react';
-import { ActionIcon } from 'lucide-react';
+import { Action } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import NodeHoverActions from '../NodeHoverActions';
 import { useWorkflow } from '../../context/WorkflowContext';
@@ -29,12 +29,12 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
         <Handle 
           type="source" 
           position={Position.Right} 
-          className="w-3 h-3 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
+          className="w-2 h-2 !bg-gray-300 !border-0 hover:!bg-gray-400 transition-colors" 
         />
         
         <div className="flex items-center gap-3">
           <div className="p-2 bg-green-100 rounded-lg">
-            <ActionIcon className="w-4 h-4 text-green-600" />
+            <Action className="w-4 h-4 text-green-600" />
           </div>
           <div>
             <div className="font-medium text-sm">{data.label}</div>
@@ -46,7 +46,7 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
         
         {data.config?.interval && (
           <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1">
-            <ActionIcon className="w-3 h-3" />
+            <Action className="w-3 h-3" />
             Every {data.config.interval}
           </div>
         )}
