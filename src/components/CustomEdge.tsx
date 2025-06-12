@@ -8,6 +8,7 @@ import {
   EdgeProps
 } from '@xyflow/react';
 import { X, Plus } from 'lucide-react';
+import { useWorkflow } from '../context/WorkflowContext';
 
 const CustomEdge: React.FC<EdgeProps> = ({
   id,
@@ -19,8 +20,11 @@ const CustomEdge: React.FC<EdgeProps> = ({
   targetPosition,
   style = {},
   markerEnd,
+  source,
+  target,
 }) => {
   const { setEdges, setNodes } = useReactFlow();
+  const { setPendingConnection, nodes } = useWorkflow();
   const [isHovered, setIsHovered] = useState(false);
 
   const [edgePath, labelX, labelY] = getBezierPath({
@@ -37,44 +41,18 @@ const CustomEdge: React.FC<EdgeProps> = ({
   };
 
   const onAddNode = () => {
-    // Add a new action node in the middle of the edge
-    const newNodeId = `action-${Date.now()}`;
-    const newNode = {
-      id: newNodeId,
-      type: 'action',
-      position: { x: labelX - 75, y: labelY - 25 },
-      data: {
-        label: 'Action',
-        config: { operation: 'create' }
-      }
-    };
+    // Find the source node to get its position
+    const sourceNode = nodes.find(node => node.id === source);
+    if (!sourceNode) return;
 
-    setNodes((nodes) => [...nodes, newNode]);
+    // Set up pending connection from the source node
+    const connectionData = {
+      sourceNodeId: source,
+      sourcePosition: { x: sourceNode.position.x + 250, y: sourceNode.position.y }
+    };
     
-    // Update edges to connect through the new node
-    setEdges((edges) => {
-      const currentEdge = edges.find(edge => edge.id === id);
-      if (!currentEdge) return edges;
-      
-      return edges
-        .filter(edge => edge.id !== id)
-        .concat([
-          {
-            id: `edge-${currentEdge.source}-${newNodeId}`,
-            source: currentEdge.source,
-            target: newNodeId,
-            type: 'smoothstep',
-            style: { stroke: '#9CA3AF' }
-          },
-          {
-            id: `edge-${newNodeId}-${currentEdge.target}`,
-            source: newNodeId,
-            target: currentEdge.target,
-            type: 'smoothstep',
-            style: { stroke: '#9CA3AF' }
-          }
-        ]);
-    });
+    console.log('Setting pending connection from edge plus:', connectionData);
+    setPendingConnection(connectionData);
   };
 
   return (
