@@ -28,9 +28,20 @@ interface PropertiesPanelProps {
   onSave: () => void;
 }
 
+interface NodeConfig {
+  [key: string]: any;
+}
+
+interface NodeData {
+  label?: string;
+  description?: string;
+  enabled?: boolean;
+  config?: NodeConfig;
+}
+
 const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
   const { selectedNode, setSelectedNode, setNodes } = useWorkflow();
-  const [nodeData, setNodeData] = useState(selectedNode?.data || {});
+  const [nodeData, setNodeData] = useState<NodeData>(selectedNode?.data || {});
 
   if (!selectedNode) {
     return (
@@ -55,8 +66,13 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
   };
 
   const updateNodeConfig = (key: string, value: any) => {
-    const updatedConfig = { ...nodeData.config, [key]: value };
+    const currentConfig = nodeData.config || {};
+    const updatedConfig = { ...currentConfig, [key]: value };
     updateNodeData('config', updatedConfig);
+  };
+
+  const getConfigValue = (key: string, defaultValue: any = '') => {
+    return nodeData.config?.[key] ?? defaultValue;
   };
 
   const handleSave = () => {
@@ -101,7 +117,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
             <div>
               <Label htmlFor="trigger-type">Trigger Type</Label>
               <Select
-                value={nodeData.config?.event || 'manual'}
+                value={getConfigValue('event', 'manual')}
                 onValueChange={(value) => updateNodeConfig('event', value)}
               >
                 <SelectTrigger>
@@ -115,12 +131,12 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
               </Select>
             </div>
             
-            {nodeData.config?.event === 'schedule' && (
+            {getConfigValue('event') === 'schedule' && (
               <div>
                 <Label htmlFor="interval">Interval</Label>
                 <Input
                   id="interval"
-                  value={nodeData.config?.interval || ''}
+                  value={getConfigValue('interval', '')}
                   onChange={(e) => updateNodeConfig('interval', e.target.value)}
                   placeholder="e.g., 5 minutes, 1 hour"
                 />
@@ -136,7 +152,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
               <Label htmlFor="email-to">To</Label>
               <Input
                 id="email-to"
-                value={nodeData.config?.to || ''}
+                value={getConfigValue('to', '')}
                 onChange={(e) => updateNodeConfig('to', e.target.value)}
                 placeholder="recipient@example.com"
               />
@@ -145,7 +161,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
               <Label htmlFor="email-subject">Subject</Label>
               <Input
                 id="email-subject"
-                value={nodeData.config?.subject || ''}
+                value={getConfigValue('subject', '')}
                 onChange={(e) => updateNodeConfig('subject', e.target.value)}
                 placeholder="Email subject"
               />
@@ -154,7 +170,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
               <Label htmlFor="email-body">Body</Label>
               <Textarea
                 id="email-body"
-                value={nodeData.config?.body || ''}
+                value={getConfigValue('body', '')}
                 onChange={(e) => updateNodeConfig('body', e.target.value)}
                 placeholder="Email content"
                 rows={4}
@@ -169,7 +185,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
             <div>
               <Label htmlFor="db-operation">Operation</Label>
               <Select
-                value={nodeData.config?.operation || 'create'}
+                value={getConfigValue('operation', 'create')}
                 onValueChange={(value) => updateNodeConfig('operation', value)}
               >
                 <SelectTrigger>
@@ -187,7 +203,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
               <Label htmlFor="db-table">Table</Label>
               <Input
                 id="db-table"
-                value={nodeData.config?.table || ''}
+                value={getConfigValue('table', '')}
                 onChange={(e) => updateNodeConfig('table', e.target.value)}
                 placeholder="Table name"
               />
@@ -201,7 +217,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
             <div>
               <Label htmlFor="api-method">Method</Label>
               <Select
-                value={nodeData.config?.method || 'GET'}
+                value={getConfigValue('method', 'GET')}
                 onValueChange={(value) => updateNodeConfig('method', value)}
               >
                 <SelectTrigger>
@@ -219,7 +235,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
               <Label htmlFor="api-url">URL</Label>
               <Input
                 id="api-url"
-                value={nodeData.config?.url || ''}
+                value={getConfigValue('url', '')}
                 onChange={(e) => updateNodeConfig('url', e.target.value)}
                 placeholder="https://api.example.com/endpoint"
               />
@@ -234,7 +250,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
               <Label htmlFor="condition-field">Field</Label>
               <Input
                 id="condition-field"
-                value={nodeData.config?.field || ''}
+                value={getConfigValue('field', '')}
                 onChange={(e) => updateNodeConfig('field', e.target.value)}
                 placeholder="Field to check"
               />
@@ -242,7 +258,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
             <div>
               <Label htmlFor="condition-operator">Operator</Label>
               <Select
-                value={nodeData.config?.operator || 'equals'}
+                value={getConfigValue('operator', 'equals')}
                 onValueChange={(value) => updateNodeConfig('operator', value)}
               >
                 <SelectTrigger>
@@ -261,7 +277,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
               <Label htmlFor="condition-value">Value</Label>
               <Input
                 id="condition-value"
-                value={nodeData.config?.value || ''}
+                value={getConfigValue('value', '')}
                 onChange={(e) => updateNodeConfig('value', e.target.value)}
                 placeholder="Value to compare"
               />
@@ -276,7 +292,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
               <Label htmlFor="webhook-url">Webhook URL</Label>
               <Input
                 id="webhook-url"
-                value={nodeData.config?.url || ''}
+                value={getConfigValue('url', '')}
                 onChange={(e) => updateNodeConfig('url', e.target.value)}
                 placeholder="https://example.com/webhook"
               />
@@ -284,7 +300,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
             <div>
               <Label htmlFor="webhook-method">Method</Label>
               <Select
-                value={nodeData.config?.method || 'POST'}
+                value={getConfigValue('method', 'POST')}
                 onValueChange={(value) => updateNodeConfig('method', value)}
               >
                 <SelectTrigger>
@@ -308,7 +324,7 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
               <Label htmlFor="action-type">Action Type</Label>
               <Input
                 id="action-type"
-                value={nodeData.config?.action || ''}
+                value={getConfigValue('action', '')}
                 onChange={(e) => updateNodeConfig('action', e.target.value)}
                 placeholder="Action to perform"
               />
