@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,7 +23,7 @@ import {
   Edit,
   Trash2,
   RotateCw,
-  Toggle,
+  ToggleLeft,
   Code
 } from 'lucide-react';
 import { useWorkflow } from '../context/WorkflowContext';
@@ -93,7 +92,7 @@ const nodeCategories = [
     title: 'Values',
     nodes: [
       { type: 'increment-value', label: 'Increment Value', icon: RotateCw, color: 'text-green-600' },
-      { type: 'toggle-value', label: 'Toggle Value', icon: Toggle, color: 'text-blue-600' }
+      { type: 'toggle-value', label: 'Toggle Value', icon: ToggleLeft, color: 'text-blue-600' }
     ]
   },
   {

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -204,6 +203,146 @@ const PropertiesPanel: React.FC = () => {
     </div>
   );
 
+  const renderShareProperties = (): React.ReactNode => (
+    <div className="space-y-4">
+      <div>
+        <Label>Text to Share</Label>
+        <Textarea
+          value={config.text || ''}
+          onChange={(e) => updateNodeData({ text: e.target.value })}
+          placeholder="Text to share"
+        />
+      </div>
+      <div>
+        <Label>URL (optional)</Label>
+        <Input
+          value={config.url || ''}
+          onChange={(e) => updateNodeData({ url: e.target.value })}
+          placeholder="https://example.com"
+        />
+      </div>
+    </div>
+  );
+
+  const renderLinkProperties = (): React.ReactNode => (
+    <div className="space-y-4">
+      <div>
+        <Label>URL</Label>
+        <Input
+          value={config.url || ''}
+          onChange={(e) => updateNodeData({ url: e.target.value })}
+          placeholder="https://example.com"
+        />
+      </div>
+    </div>
+  );
+
+  const renderFileProperties = (): React.ReactNode => (
+    <div className="space-y-4">
+      <div>
+        <Label>File Name</Label>
+        <Input
+          value={config.fileName || ''}
+          onChange={(e) => updateNodeData({ fileName: e.target.value })}
+          placeholder="document.pdf"
+        />
+      </div>
+      <div>
+        <Label>File Type</Label>
+        <Input
+          value={config.fileType || ''}
+          onChange={(e) => updateNodeData({ fileType: e.target.value })}
+          placeholder="pdf, doc, image, etc."
+        />
+      </div>
+    </div>
+  );
+
+  const renderMapProperties = (): React.ReactNode => (
+    <div className="space-y-4">
+      <div>
+        <Label>Address</Label>
+        <Textarea
+          value={config.mapAddress || ''}
+          onChange={(e) => updateNodeData({ mapAddress: e.target.value })}
+          placeholder="Enter address or location"
+        />
+      </div>
+    </div>
+  );
+
+  const renderScreenProperties = (): React.ReactNode => (
+    <div className="space-y-4">
+      <div>
+        <Label>Screen Name</Label>
+        <Input
+          value={config.screen || ''}
+          onChange={(e) => updateNodeData({ screen: e.target.value })}
+          placeholder="screen_name"
+        />
+      </div>
+    </div>
+  );
+
+  const renderDatabaseProperties = (): React.ReactNode => (
+    <div className="space-y-4">
+      <div>
+        <Label>Table</Label>
+        <Input
+          value={config.table || ''}
+          onChange={(e) => updateNodeData({ table: e.target.value })}
+          placeholder="table_name"
+        />
+      </div>
+      {(selectedNode.type === 'modify-column') && (
+        <>
+          <div>
+            <Label>Column</Label>
+            <Input
+              value={config.column || ''}
+              onChange={(e) => updateNodeData({ column: e.target.value })}
+              placeholder="column_name"
+            />
+          </div>
+          <div>
+            <Label>Value</Label>
+            <Input
+              value={config.value || ''}
+              onChange={(e) => updateNodeData({ value: e.target.value })}
+              placeholder="new_value"
+            />
+          </div>
+        </>
+      )}
+    </div>
+  );
+
+  const renderValueProperties = (): React.ReactNode => (
+    <div className="space-y-4">
+      <div>
+        <Label>Value</Label>
+        <Input
+          value={config.value || ''}
+          onChange={(e) => updateNodeData({ value: e.target.value })}
+          placeholder={selectedNode.type === 'increment-value' ? '1' : 'value_name'}
+        />
+      </div>
+    </div>
+  );
+
+  const renderSoundProperties = (): React.ReactNode => (
+    <div className="space-y-4">
+      <div>
+        <Label>Sound URL</Label>
+        <Input
+          value={config.soundUrl || ''}
+          onChange={(e) => updateNodeData({ soundUrl: e.target.value })}
+          placeholder="https://example.com/sound.mp3"
+        />
+      </div>
+    </div>
+  );
+
   const renderWebhookProperties = (): React.ReactNode => (
     <div className="space-y-4">
       <div>
@@ -325,15 +464,46 @@ const PropertiesPanel: React.FC = () => {
         return renderClipboardProperties();
       case 'download':
         return renderDownloadProperties();
+      case 'share':
+        return renderShareProperties();
+      case 'open-link':
+        return renderLinkProperties();
+      case 'open-file':
+        return renderFileProperties();
+      case 'open-map':
+        return renderMapProperties();
+      case 'go-to-screen':
+        return renderScreenProperties();
+      case 'add-row':
+      case 'modify-column':
+      case 'delete-row':
+      case 'duplicate-row':
+      case 'open-update-form':
+        return renderDatabaseProperties();
+      case 'increment-value':
+      case 'toggle-value':
+        return renderValueProperties();
+      case 'play-sound':
+        return renderSoundProperties();
       case 'webhook':
       case 'http-request':
         return renderWebhookProperties();
       case 'condition':
         return renderConditionProperties();
+      case 'component-action':
+      case 'manual-trigger':
+      case 'schedule':
       case 'trigger':
         return renderTriggerProperties();
       case 'code':
         return renderCodeProperties();
+      case 'none':
+      case 'go-back':
+      case 'previous-item':
+      case 'next-item':
+      case 'open-overlay':
+      case 'close-overlay':
+        return <div className="text-muted-foreground">No configuration needed</div>;
       default:
         return <div className="text-muted-foreground">No properties available</div>;
     }
