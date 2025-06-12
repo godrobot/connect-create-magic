@@ -56,7 +56,7 @@ const ActionNode = ({ data, selected, type, id, ...nodeProps }: any) => {
       onPlay={() => console.log('Run node', id)}
       onStop={() => console.log('Stop node', id)}
     >
-      <div className="relative group">
+      <div className="relative">
         <Card className={`p-3 min-w-48 border ${selected ? 'border-primary border-2' : 'border-gray-300'} bg-background shadow-md relative`}>
           <Handle 
             type="target" 
@@ -85,14 +85,14 @@ const ActionNode = ({ data, selected, type, id, ...nodeProps }: any) => {
         </Card>
 
         {/* Connection line with plus icon extending from the right */}
-        <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+        <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center pointer-events-none">
           <div className="w-8 h-0.5 bg-gray-300"></div>
           <button
             onClick={handleAddNode}
-            className="w-5 h-5 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition-colors pointer-events-auto"
+            className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors pointer-events-auto"
             title="Add node"
           >
-            <Plus className="w-3 h-3" />
+            <Plus className="w-2.5 h-2.5" />
           </button>
         </div>
       </div>
