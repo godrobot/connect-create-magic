@@ -7,7 +7,10 @@ import NodeHoverActions from '../NodeHoverActions';
 import { useWorkflow } from '../../context/WorkflowContext';
 
 const TriggerNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
-  const { setNodes, setSelectedNode, setPendingConnection } = useWorkflow();
+  const { setNodes, setSelectedNode, setPendingConnection, edges } = useWorkflow();
+
+  // Check if this node has any outgoing connections
+  const hasOutgoingConnection = edges.some(edge => edge.source === id);
 
   const handleDelete = () => {
     setNodes(prev => prev.filter(node => node.id !== id));
@@ -75,21 +78,23 @@ const TriggerNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
         </Card>
       </NodeHoverActions>
 
-      {/* Connection line with plus icon - positioned completely outside the node to avoid event conflicts */}
-      <div 
-        className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center z-50"
-        style={{ pointerEvents: 'none' }}
-      >
-        <div className="w-8 h-0.5 bg-gray-400"></div>
-        <button
-          onMouseDown={handleAddNode}
-          className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
-          title="Add node"
-          style={{ pointerEvents: 'auto' }}
+      {/* Connection line with plus icon - only show if no outgoing connections */}
+      {!hasOutgoingConnection && (
+        <div 
+          className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center z-50"
+          style={{ pointerEvents: 'none' }}
         >
-          <Plus className="w-2.5 h-2.5" />
-        </button>
-      </div>
+          <div className="w-8 h-0.5 bg-gray-400"></div>
+          <button
+            onMouseDown={handleAddNode}
+            className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
+            title="Add node"
+            style={{ pointerEvents: 'auto' }}
+          >
+            <Plus className="w-2.5 h-2.5" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
