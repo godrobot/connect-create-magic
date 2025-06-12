@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -50,7 +51,7 @@ const PropertiesPanel: React.FC = () => {
 
   const config = (selectedNode.data.config as NodeConfig) || {};
 
-  const renderWebhookProperties = () => (
+  const renderWebhookProperties = (): React.ReactNode => (
     <div className="space-y-4">
       <div>
         <Label>URL</Label>
@@ -77,7 +78,7 @@ const PropertiesPanel: React.FC = () => {
     </div>
   );
 
-  const renderEmailProperties = () => (
+  const renderEmailProperties = (): React.ReactNode => (
     <div className="space-y-4">
       <div>
         <Label>To</Label>
@@ -106,7 +107,7 @@ const PropertiesPanel: React.FC = () => {
     </div>
   );
 
-  const renderConditionProperties = () => (
+  const renderConditionProperties = (): React.ReactNode => (
     <div className="space-y-4">
       <div>
         <Label>Operator</Label>
@@ -134,7 +135,7 @@ const PropertiesPanel: React.FC = () => {
     </div>
   );
 
-  const renderTriggerProperties = () => (
+  const renderTriggerProperties = (): React.ReactNode => (
     <div className="space-y-4">
       <div>
         <Label>Event Type</Label>
