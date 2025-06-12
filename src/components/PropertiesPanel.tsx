@@ -6,15 +6,29 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useWorkflow } from '../context/WorkflowContext';
-import { X } from 'lucide-react';
 
 interface PropertiesPanelProps {
   onSave: () => void;
 }
 
+interface NodeConfig {
+  [key: string]: any;
+  event?: string;
+  interval?: string;
+  to?: string;
+  subject?: string;
+  body?: string;
+  url?: string;
+  method?: string;
+  field?: string;
+  operator?: string;
+  value?: string;
+  operation?: string;
+}
+
 const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
   const { selectedNode, setNodes } = useWorkflow();
-  const [config, setConfig] = React.useState(selectedNode?.data?.config || {});
+  const [config, setConfig] = React.useState<NodeConfig>(selectedNode?.data?.config || {});
 
   React.useEffect(() => {
     setConfig(selectedNode?.data?.config || {});
