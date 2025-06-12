@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { Zap, Plus } from 'lucide-react';
@@ -7,7 +6,7 @@ import NodeHoverActions from '../NodeHoverActions';
 import { useWorkflow } from '../../context/WorkflowContext';
 
 const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
-  const { setNodes, setSelectedNode } = useWorkflow();
+  const { setNodes, setSelectedNode, setPendingConnection } = useWorkflow();
 
   const handleDelete = () => {
     setNodes(prev => prev.filter(node => node.id !== id));
@@ -18,18 +17,12 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
   };
 
   const handleAddNode = () => {
-    const newNodeId = `action-${Date.now()}`;
-    const newNode = {
-      id: newNodeId,
-      type: 'action',
-      position: { x: nodeProps.position.x + 250, y: nodeProps.position.y },
-      data: {
-        label: 'New Action',
-        config: { operation: 'create' }
-      }
-    };
-
-    setNodes(prev => [...prev, newNode]);
+    // Set up pending connection and trigger sidebar
+    setPendingConnection({
+      sourceNodeId: id,
+      sourcePosition: { x: nodeProps.position.x + 250, y: nodeProps.position.y }
+    });
+    setSelectedNode(null); // This will trigger the sidebar to open for node selection
   };
 
   return (

@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Plus, X } from 'lucide-react';
 
 const WorkflowContent = () => {
-  const { selectedNode, setSelectedNode } = useWorkflow();
+  const { selectedNode, setSelectedNode, pendingConnection } = useWorkflow();
   const [showNodePalette, setShowNodePalette] = useState(false);
   const [showPropertiesPanel, setShowPropertiesPanel] = useState(false);
 
@@ -20,6 +20,14 @@ const WorkflowContent = () => {
       setShowNodePalette(false);
     }
   }, [selectedNode]);
+
+  // Show node palette when there's a pending connection
+  React.useEffect(() => {
+    if (pendingConnection) {
+      setShowNodePalette(true);
+      setShowPropertiesPanel(false);
+    }
+  }, [pendingConnection]);
 
   const handleAddNodeClick = () => {
     setShowNodePalette(true);

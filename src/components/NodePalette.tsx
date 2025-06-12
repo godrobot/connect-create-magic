@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -116,18 +115,31 @@ interface NodePaletteProps {
 }
 
 const NodePalette: React.FC<NodePaletteProps> = ({ onNodeAdded }) => {
-  const { addNode } = useWorkflow();
+  const { addNode, addNodeWithConnection, pendingConnection } = useWorkflow();
 
   const handleNodeClick = (nodeType: string) => {
-    addNode(nodeType, { x: 250, y: 250 });
+    if (pendingConnection) {
+      // If there's a pending connection, use the special handler
+      addNodeWithConnection(nodeType);
+    } else {
+      // Otherwise, add node normally
+      addNode(nodeType, { x: 250, y: 250 });
+    }
     onNodeAdded?.();
   };
 
   return (
     <div className="h-full">
       <div className="p-4 border-b">
-        <h2 className="text-lg font-semibold">Add Node</h2>
-        <p className="text-sm text-muted-foreground">Choose a node to add to your workflow</p>
+        <h2 className="text-lg font-semibold">
+          {pendingConnection ? 'Select Node to Connect' : 'Add Node'}
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          {pendingConnection 
+            ? 'Choose a node to connect to the selected node' 
+            : 'Choose a node to add to your workflow'
+          }
+        </p>
       </div>
       
       <ScrollArea className="h-full pb-16">

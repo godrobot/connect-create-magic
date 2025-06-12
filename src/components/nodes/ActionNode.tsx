@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { 
@@ -29,7 +28,7 @@ const getNodeIcon = (type: string) => {
 };
 
 const ActionNode = ({ data, selected, type, id, ...nodeProps }: any) => {
-  const { setNodes, setSelectedNode } = useWorkflow();
+  const { setNodes, setSelectedNode, setPendingConnection } = useWorkflow();
   const { icon: Icon, color, bg } = getNodeIcon(type);
   
   const handleDelete = () => {
@@ -41,18 +40,11 @@ const ActionNode = ({ data, selected, type, id, ...nodeProps }: any) => {
   };
 
   const handleAddNode = () => {
-    const newNodeId = `action-${Date.now()}`;
-    const newNode = {
-      id: newNodeId,
-      type: 'action',
-      position: { x: nodeProps.position.x + 250, y: nodeProps.position.y },
-      data: {
-        label: 'New Action',
-        config: { operation: 'create' }
-      }
-    };
-
-    setNodes(prev => [...prev, newNode]);
+    setPendingConnection({
+      sourceNodeId: id,
+      sourcePosition: { x: nodeProps.position.x + 250, y: nodeProps.position.y }
+    });
+    setSelectedNode(null); // This will trigger the sidebar to open for node selection
   };
 
   return (

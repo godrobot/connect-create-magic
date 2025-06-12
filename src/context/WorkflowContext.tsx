@@ -1,14 +1,22 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { Node, Edge } from '@xyflow/react';
 
+interface PendingConnection {
+  sourceNodeId: string;
+  sourcePosition: { x: number; y: number };
+}
+
 interface WorkflowContextType {
   nodes: Node[];
   edges: Edge[];
   selectedNode: Node | null;
+  pendingConnection: PendingConnection | null;
   setNodes: React.Dispatch<React.SetStateAction<Node[]>>;
   setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
   setSelectedNode: (node: Node | null) => void;
+  setPendingConnection: (connection: PendingConnection | null) => void;
   addNode: (type: string, position: { x: number; y: number }) => void;
+  addNodeWithConnection: (type: string) => void;
 }
 
 const WorkflowContext = createContext<WorkflowContextType | undefined>(undefined);
@@ -29,6 +37,7 @@ export const WorkflowProvider: React.FC<WorkflowProviderProps> = ({ children }) 
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
+  const [pendingConnection, setPendingConnection] = useState<PendingConnection | null>(null);
 
   const addNode = (type: string, position: { x: number; y: number }) => {
     const nodeType = getReactFlowNodeType(type);
@@ -42,6 +51,39 @@ export const WorkflowProvider: React.FC<WorkflowProviderProps> = ({ children }) 
       }
     };
     setNodes(prev => [...prev, newNode]);
+  };
+
+  const addNodeWithConnection = (type: string) => {
+    if (!pendingConnection) return;
+    
+    const nodeType = getReactFlowNodeType(type);
+    const newNodeId = `${type}-${Date.now()}`;
+    const newNode: Node = {
+      id: newNodeId,
+      type: nodeType,
+      position: pendingConnection.sourcePosition,
+      data: {
+        label: getNodeLabel(type),
+        config: getDefaultConfig(type)
+      }
+    };
+    
+    // Add the new node
+    setNodes(prev => [...prev, newNode]);
+    
+    // Create the edge connection
+    const newEdge: Edge = {
+      id: `edge-${pendingConnection.sourceNodeId}-${newNodeId}`,
+      source: pendingConnection.sourceNodeId,
+      target: newNodeId,
+      type: 'smoothstep',
+      style: { stroke: '#9CA3AF' }
+    };
+    
+    setEdges(prev => [...prev, newEdge]);
+    
+    // Clear pending connection
+    setPendingConnection(null);
   };
 
   const getReactFlowNodeType = (type: string) => {
@@ -172,10 +214,13 @@ export const WorkflowProvider: React.FC<WorkflowProviderProps> = ({ children }) 
       nodes,
       edges,
       selectedNode,
+      pendingConnection,
       setNodes,
       setEdges,
       setSelectedNode,
-      addNode
+      setPendingConnection,
+      addNode,
+      addNodeWithConnection
     }}>
       {children}
     </WorkflowContext.Provider>
