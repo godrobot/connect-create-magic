@@ -65,17 +65,16 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
         </Card>
       </NodeHoverActions>
 
-      {/* Connection line with plus icon extending from the right - outside NodeHoverActions */}
-      <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center pointer-events-none">
+      {/* Connection line with plus icon - positioned outside NodeHoverActions to avoid hover interference */}
+      <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center z-10">
         <div className="w-8 h-0.5 bg-gray-400"></div>
-        <button
+        <div
           onClick={handleAddNode}
-          className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer pointer-events-auto"
+          className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer"
           title="Add node"
-          type="button"
         >
           <Plus className="w-2.5 h-2.5" />
-        </button>
+        </div>
       </div>
     </div>
   );
