@@ -20,12 +20,15 @@ const WebhookNode = ({ data, selected, id, ...nodeProps }: any) => {
   const handleAddNode = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Plus icon clicked for node:', id);
+    console.log('Plus icon clicked for node:', id, 'at position:', nodeProps.position);
     
-    setPendingConnection({
+    const connectionData = {
       sourceNodeId: id,
       sourcePosition: { x: nodeProps.position.x + 250, y: nodeProps.position.y }
-    });
+    };
+    
+    console.log('Setting pending connection:', connectionData);
+    setPendingConnection(connectionData);
     setSelectedNode(null);
   };
 
@@ -64,15 +67,16 @@ const WebhookNode = ({ data, selected, id, ...nodeProps }: any) => {
       </NodeHoverActions>
 
       {/* Connection line with plus icon - positioned outside NodeHoverActions to avoid hover interference */}
-      <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center z-10">
-        <div className="w-8 h-0.5 bg-gray-400"></div>
-        <div
-          onClick={handleAddNode}
-          className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer"
+      <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center z-20 pointer-events-auto">
+        <div className="w-8 h-0.5 bg-gray-400 pointer-events-none"></div>
+        <button
+          onMouseDown={handleAddNode}
+          className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
           title="Add node"
+          style={{ pointerEvents: 'auto' }}
         >
           <Plus className="w-2.5 h-2.5" />
-        </div>
+        </button>
       </div>
     </div>
   );
