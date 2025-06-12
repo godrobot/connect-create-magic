@@ -51,10 +51,16 @@ export const WorkflowProvider: React.FC<WorkflowProviderProps> = ({ children }) 
       }
     };
     setNodes(prev => [...prev, newNode]);
+    console.log('Added node:', newNode);
   };
 
   const addNodeWithConnection = (type: string) => {
-    if (!pendingConnection) return;
+    console.log('addNodeWithConnection called with type:', type, 'pendingConnection:', pendingConnection);
+    
+    if (!pendingConnection) {
+      console.log('No pending connection found');
+      return;
+    }
     
     const nodeType = getReactFlowNodeType(type);
     const newNodeId = `${type}-${Date.now()}`;
@@ -68,8 +74,14 @@ export const WorkflowProvider: React.FC<WorkflowProviderProps> = ({ children }) 
       }
     };
     
+    console.log('Creating new node:', newNode);
+    
     // Add the new node
-    setNodes(prev => [...prev, newNode]);
+    setNodes(prev => {
+      const updated = [...prev, newNode];
+      console.log('Updated nodes:', updated);
+      return updated;
+    });
     
     // Create the edge connection
     const newEdge: Edge = {
@@ -80,9 +92,16 @@ export const WorkflowProvider: React.FC<WorkflowProviderProps> = ({ children }) 
       style: { stroke: '#9CA3AF' }
     };
     
-    setEdges(prev => [...prev, newEdge]);
+    console.log('Creating new edge:', newEdge);
+    
+    setEdges(prev => {
+      const updated = [...prev, newEdge];
+      console.log('Updated edges:', updated);
+      return updated;
+    });
     
     // Clear pending connection
+    console.log('Clearing pending connection');
     setPendingConnection(null);
   };
 

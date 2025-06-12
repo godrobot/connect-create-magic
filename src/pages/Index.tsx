@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import WorkflowCanvas from '../components/WorkflowCanvas';
 import NodePalette from '../components/NodePalette';
@@ -16,6 +15,7 @@ const WorkflowContent = () => {
   // Show properties panel when a node is selected
   React.useEffect(() => {
     if (selectedNode) {
+      console.log('Selected node changed:', selectedNode);
       setShowPropertiesPanel(true);
       setShowNodePalette(false);
     }
@@ -23,7 +23,9 @@ const WorkflowContent = () => {
 
   // Show node palette when there's a pending connection
   React.useEffect(() => {
+    console.log('Pending connection changed:', pendingConnection);
     if (pendingConnection) {
+      console.log('Setting showNodePalette to true');
       setShowNodePalette(true);
       setShowPropertiesPanel(false);
     }
@@ -49,6 +51,8 @@ const WorkflowContent = () => {
     setShowPropertiesPanel(false);
     setSelectedNode(null);
   };
+
+  console.log('Render state - showNodePalette:', showNodePalette, 'showPropertiesPanel:', showPropertiesPanel);
 
   return (
     <div className="h-screen w-full flex flex-col bg-background">
