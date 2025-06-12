@@ -48,22 +48,22 @@ const WebhookNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
         onPlay={() => console.log('Run webhook', id)}
         onStop={() => console.log('Stop webhook', id)}
       >
-        <Card className={`p-0.5 min-w-16 border border-gray-300 bg-background shadow-sm rounded-l-full`}>
+        <Card className={`p-0.5 min-w-12 border border-gray-300 bg-background shadow-sm rounded-l-full`}>
           <Handle 
             type="source" 
             position={Position.Right} 
-            className="w-1.5 h-1.5 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
+            className="w-1 h-1 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
             onClick={handleHandleClick}
             onMouseDown={handleHandleClick}
           />
           
           <div className="flex items-center gap-0.5">
             <div className="p-0.5 bg-blue-100 rounded-md">
-              <Webhook className="w-1.5 h-1.5 text-blue-600" />
+              <Webhook className="w-1 h-1 text-blue-600" />
             </div>
             <div>
-              <div className="font-medium text-xs leading-tight">{data.label}</div>
-              <div className="text-xs text-muted-foreground leading-tight">
+              <div className="font-medium text-[8px] leading-tight">{data.label}</div>
+              <div className="text-[7px] text-muted-foreground leading-tight">
                 {data.config?.method || 'POST'} {data.config?.url ? 'Configured' : 'Not configured'}
               </div>
             </div>
@@ -77,14 +77,14 @@ const WebhookNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
           className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center z-50"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="w-3 h-0.5 bg-gray-400"></div>
+          <div className="w-2 h-0.5 bg-gray-400"></div>
           <button
             onMouseDown={handleAddNode}
-            className="w-1.5 h-1.5 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
+            className="w-1 h-1 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
             title="Add node"
             style={{ pointerEvents: 'auto' }}
           >
-            <Plus className="w-1 h-1" />
+            <Plus className="w-0.5 h-0.5" />
           </button>
         </div>
       )}
