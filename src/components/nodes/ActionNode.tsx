@@ -27,7 +27,7 @@ const getNodeIcon = (type: string) => {
   }
 };
 
-const ActionNode = ({ data, selected, type, id }: any) => {
+const ActionNode = ({ data, selected, type, id, ...nodeProps }: any) => {
   const { setNodes, setSelectedNode } = useWorkflow();
   const { icon: Icon, color, bg } = getNodeIcon(type);
   
@@ -36,7 +36,7 @@ const ActionNode = ({ data, selected, type, id }: any) => {
   };
 
   const handleSettings = () => {
-    setSelectedNode({ id, data, type });
+    setSelectedNode({ id, data, type, ...nodeProps });
   };
 
   return (
@@ -47,10 +47,10 @@ const ActionNode = ({ data, selected, type, id }: any) => {
       onStop={() => console.log('Stop node', id)}
     >
       <Card className={`p-3 min-w-48 border-2 ${selected ? 'border-primary' : 'border-border'} bg-background shadow-md relative`}>
-        <Handle type="target" position={Position.Left} className="w-3 h-3 !bg-gray-400 !border-gray-400" />
-        <Handle type="source" position={Position.Right} className="w-3 h-3 !bg-gray-400 !border-gray-400" />
-        <Handle type="target" position={Position.Top} className="w-3 h-3 !bg-gray-400 !border-gray-400" />
-        <Handle type="source" position={Position.Bottom} className="w-3 h-3 !bg-gray-400 !border-gray-400" />
+        <Handle type="target" position={Position.Left} className="w-3 h-3 !bg-gray-300 !border-gray-300" />
+        <Handle type="source" position={Position.Right} className="w-3 h-3 !bg-gray-300 !border-gray-300" />
+        <Handle type="target" position={Position.Top} className="w-3 h-3 !bg-gray-300 !border-gray-300" />
+        <Handle type="source" position={Position.Bottom} className="w-3 h-3 !bg-gray-300 !border-gray-300" />
         
         <div className="flex items-center gap-3">
           <div className={`p-2 ${bg} rounded-lg`}>
