@@ -28,7 +28,7 @@ const getNodeIcon = (type: string) => {
   }
 };
 
-const ActionNode = ({ data, selected, type, id, ...nodeProps }: any) => {
+const ActionNode = ({ data, selected, type, id, xPos, yPos, ...nodeProps }: any) => {
   const { setNodes, setSelectedNode, setPendingConnection } = useWorkflow();
   const { icon: Icon, color, bg } = getNodeIcon(type);
   
@@ -37,25 +37,23 @@ const ActionNode = ({ data, selected, type, id, ...nodeProps }: any) => {
   };
 
   const handleSettings = () => {
-    setSelectedNode({ id, data, type, ...nodeProps });
+    setSelectedNode({ id, data, type, xPos, yPos, ...nodeProps });
   };
 
   const handleAddNode = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
-    // Clear any selected node first
-    setSelectedNode(null);
-    
-    console.log('Plus icon clicked for node:', id, 'at position:', nodeProps.position);
+    console.log('Plus icon clicked for node:', id, 'at position:', { x: xPos, y: yPos });
     
     const connectionData = {
       sourceNodeId: id,
-      sourcePosition: { x: nodeProps.position.x + 250, y: nodeProps.position.y }
+      sourcePosition: { x: xPos + 250, y: yPos }
     };
     
     console.log('Setting pending connection:', connectionData);
     setPendingConnection(connectionData);
+    setSelectedNode(null);
   };
 
   return (
@@ -101,8 +99,7 @@ const ActionNode = ({ data, selected, type, id, ...nodeProps }: any) => {
       >
         <div className="w-8 h-0.5 bg-gray-400"></div>
         <button
-          onClick={handleAddNode}
-          onMouseDown={(e) => e.stopPropagation()}
+          onMouseDown={handleAddNode}
           className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
           title="Add node"
           style={{ pointerEvents: 'auto' }}
