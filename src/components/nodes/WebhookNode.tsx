@@ -39,7 +39,7 @@ const WebhookNode = ({ data, selected, id, ...nodeProps }: any) => {
       onPlay={() => console.log('Run webhook', id)}
       onStop={() => console.log('Stop webhook', id)}
     >
-      <div className="relative">
+      <div className="relative group">
         <Card className={`p-3 min-w-48 border border-gray-300 ${selected ? 'border-primary border-2' : ''} bg-background shadow-md relative`}>
           {/* Left and right connectors - larger size */}
           <Handle 
@@ -68,10 +68,10 @@ const WebhookNode = ({ data, selected, id, ...nodeProps }: any) => {
 
         {/* Connection line with plus icon - positioned at the right edge */}
         <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center">
-          <div className="w-6 h-0.5 bg-gray-300"></div>
+          <div className="w-6 h-0.5 bg-gray-400"></div>
           <button
             onClick={handleAddNode}
-            className="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition-colors"
+            className="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition-colors opacity-0 group-hover:opacity-100"
             title="Add node"
           >
             <Plus className="w-3 h-3" />

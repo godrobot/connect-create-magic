@@ -63,13 +63,15 @@ const CustomEdge: React.FC<EdgeProps> = ({
             id: `edge-${currentEdge.source}-${newNodeId}`,
             source: currentEdge.source,
             target: newNodeId,
-            type: 'smoothstep'
+            type: 'smoothstep',
+            style: { stroke: '#9CA3AF' }
           },
           {
             id: `edge-${newNodeId}-${currentEdge.target}`,
             source: newNodeId,
             target: currentEdge.target,
-            type: 'smoothstep'
+            type: 'smoothstep',
+            style: { stroke: '#9CA3AF' }
           }
         ]);
     });
@@ -80,7 +82,7 @@ const CustomEdge: React.FC<EdgeProps> = ({
       <BaseEdge 
         path={edgePath} 
         markerEnd={markerEnd} 
-        style={style}
+        style={{ ...style, stroke: '#9CA3AF' }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       />
