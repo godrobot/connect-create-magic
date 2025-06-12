@@ -23,7 +23,7 @@ interface NodeConfig {
   headers?: Record<string, string>;
 }
 
-const PropertiesPanel = () => {
+const PropertiesPanel: React.FC = () => {
   const { selectedNode, setNodes } = useWorkflow();
 
   const updateNodeData = (updates: Partial<NodeConfig>) => {
@@ -165,6 +165,10 @@ const PropertiesPanel = () => {
   );
 
   const getPropertiesContent = (): React.ReactNode => {
+    if (!selectedNode?.type) {
+      return <div className="text-muted-foreground">No properties available</div>;
+    }
+
     switch (selectedNode.type) {
       case 'webhook':
         return renderWebhookProperties();
