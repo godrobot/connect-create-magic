@@ -9,6 +9,8 @@ import {
   Zap
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import NodeHoverActions from '../NodeHoverActions';
+import { useWorkflow } from '../../context/WorkflowContext';
 
 const getNodeIcon = (type: string) => {
   switch (type) {
@@ -25,30 +27,46 @@ const getNodeIcon = (type: string) => {
   }
 };
 
-const ActionNode = ({ data, selected, type }: any) => {
+const ActionNode = ({ data, selected, type, id }: any) => {
+  const { setNodes, setSelectedNode } = useWorkflow();
   const { icon: Icon, color, bg } = getNodeIcon(type);
   
+  const handleDelete = () => {
+    setNodes(prev => prev.filter(node => node.id !== id));
+  };
+
+  const handleSettings = () => {
+    setSelectedNode({ id, data, type });
+  };
+
   return (
-    <Card className={`p-3 min-w-48 border-2 ${selected ? 'border-primary' : 'border-border'} bg-background shadow-md relative`}>
-      <Handle type="target" position={Position.Left} className="w-3 h-3" />
-      <Handle type="source" position={Position.Right} className="w-3 h-3" />
-      <Handle type="target" position={Position.Top} className="w-3 h-3" />
-      <Handle type="source" position={Position.Bottom} className="w-3 h-3" />
-      
-      <div className="flex items-center gap-3">
-        <div className={`p-2 ${bg} rounded-lg`}>
-          <Icon className={`w-4 h-4 ${color}`} />
-        </div>
-        <div>
-          <div className="font-medium text-sm">{data.label}</div>
-          <div className="text-xs text-muted-foreground">
-            {type === 'email' && data.config?.to && `To: ${data.config.to}`}
-            {type === 'database' && data.config?.table && `Table: ${data.config.table}`}
-            {type === 'api' && data.config?.method && `${data.config.method} Request`}
+    <NodeHoverActions 
+      onSettings={handleSettings}
+      onDelete={handleDelete}
+      onPlay={() => console.log('Run node', id)}
+      onStop={() => console.log('Stop node', id)}
+    >
+      <Card className={`p-3 min-w-48 border-2 ${selected ? 'border-primary' : 'border-border'} bg-background shadow-md relative`}>
+        <Handle type="target" position={Position.Left} className="w-3 h-3 !bg-gray-400 !border-gray-400" />
+        <Handle type="source" position={Position.Right} className="w-3 h-3 !bg-gray-400 !border-gray-400" />
+        <Handle type="target" position={Position.Top} className="w-3 h-3 !bg-gray-400 !border-gray-400" />
+        <Handle type="source" position={Position.Bottom} className="w-3 h-3 !bg-gray-400 !border-gray-400" />
+        
+        <div className="flex items-center gap-3">
+          <div className={`p-2 ${bg} rounded-lg`}>
+            <Icon className={`w-4 h-4 ${color}`} />
+          </div>
+          <div>
+            <div className="font-medium text-sm">{data.label}</div>
+            <div className="text-xs text-muted-foreground">
+              {type === 'email' && data.config?.to && `To: ${data.config.to}`}
+              {type === 'database' && data.config?.table && `Table: ${data.config.table}`}
+              {type === 'api' && data.config?.method && `${data.config.method} Request`}
+            </div>
           </div>
         </div>
-      </div>
-    </Card>
+      </Card>
+    </NodeHoverActions>
   );
 };
 
