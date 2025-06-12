@@ -19,6 +19,7 @@ import TriggerNode from './nodes/TriggerNode';
 import ActionNode from './nodes/ActionNode';
 import ConditionNode from './nodes/ConditionNode';
 import WebhookNode from './nodes/WebhookNode';
+import CustomEdge from './CustomEdge';
 
 const nodeTypes = {
   trigger: TriggerNode,
@@ -28,6 +29,11 @@ const nodeTypes = {
   email: ActionNode,
   database: ActionNode,
   api: ActionNode
+};
+
+const edgeTypes = {
+  default: CustomEdge,
+  smoothstep: CustomEdge
 };
 
 const WorkflowCanvas = () => {
@@ -97,6 +103,7 @@ const WorkflowCanvas = () => {
         onNodeClick={onNodeClick}
         onPaneClick={onPaneClick}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         connectionMode={ConnectionMode.Loose}
         fitView
         className="bg-gray-50"

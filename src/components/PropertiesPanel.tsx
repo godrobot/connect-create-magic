@@ -44,14 +44,9 @@ const PropertiesPanel = () => {
     ));
   };
 
+  // Hide panel if no node is selected
   if (!selectedNode) {
-    return (
-      <div className="w-80 border-l bg-background p-4">
-        <div className="text-center text-muted-foreground">
-          Select a node to edit properties
-        </div>
-      </div>
-    );
+    return null;
   }
 
   const config = (selectedNode.data.config as NodeConfig) || {};
