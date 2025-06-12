@@ -9,38 +9,44 @@ import { Button } from '@/components/ui/button';
 import { Plus, X } from 'lucide-react';
 
 const WorkflowContent = () => {
-  const { selectedNode, setSelectedNode, pendingConnection } = useWorkflow();
+  const { selectedNode, setSelectedNode, pendingConnection, setPendingConnection } = useWorkflow();
   const [showNodePalette, setShowNodePalette] = useState(false);
   const [showPropertiesPanel, setShowPropertiesPanel] = useState(false);
 
-  // Show properties panel when a node is selected
-  React.useEffect(() => {
-    if (selectedNode && !pendingConnection) { // Only show properties if no pending connection
-      console.log('Selected node changed:', selectedNode);
-      setShowPropertiesPanel(true);
-      setShowNodePalette(false);
-    }
-  }, [selectedNode, pendingConnection]);
-
-  // Show node palette when there's a pending connection
+  // Show node palette when there's a pending connection (priority over properties panel)
   React.useEffect(() => {
     console.log('Pending connection changed:', pendingConnection);
     if (pendingConnection) {
-      console.log('Setting showNodePalette to true');
+      console.log('Setting showNodePalette to true and hiding properties');
       setShowNodePalette(true);
       setShowPropertiesPanel(false);
-      setSelectedNode(null); // Clear selected node when showing palette
+    } else {
+      setShowNodePalette(false);
     }
-  }, [pendingConnection, setSelectedNode]);
+  }, [pendingConnection]);
+
+  // Show properties panel when a node is selected, but only if no pending connection
+  React.useEffect(() => {
+    console.log('Selected node changed:', selectedNode, 'pendingConnection:', pendingConnection);
+    if (selectedNode && !pendingConnection) {
+      console.log('Showing properties panel for selected node');
+      setShowPropertiesPanel(true);
+      setShowNodePalette(false);
+    } else if (!pendingConnection) {
+      setShowPropertiesPanel(false);
+    }
+  }, [selectedNode, pendingConnection]);
 
   const handleAddNodeClick = () => {
     setShowNodePalette(true);
     setShowPropertiesPanel(false);
     setSelectedNode(null);
+    setPendingConnection(null);
   };
 
   const handleNodeAdded = () => {
     setShowNodePalette(false);
+    setPendingConnection(null);
   };
 
   const handlePropertiesSave = () => {
@@ -52,9 +58,10 @@ const WorkflowContent = () => {
     setShowNodePalette(false);
     setShowPropertiesPanel(false);
     setSelectedNode(null);
+    setPendingConnection(null);
   };
 
-  console.log('Render state - showNodePalette:', showNodePalette, 'showPropertiesPanel:', showPropertiesPanel);
+  console.log('Render state - showNodePalette:', showNodePalette, 'showPropertiesPanel:', showPropertiesPanel, 'pendingConnection:', !!pendingConnection);
 
   return (
     <div className="h-screen w-full flex flex-col bg-background">

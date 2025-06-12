@@ -20,6 +20,10 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
   const handleAddNode = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    // Clear any selected node first
+    setSelectedNode(null);
+    
     console.log('Plus icon clicked for node:', id, 'at position:', nodeProps.position);
     
     const connectionData = {
@@ -29,7 +33,6 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
     
     console.log('Setting pending connection:', connectionData);
     setPendingConnection(connectionData);
-    // Don't set selectedNode to null here - let the Index component handle it
   };
 
   return (
@@ -68,17 +71,21 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
         </Card>
       </NodeHoverActions>
 
-      {/* Connection line with plus icon - positioned outside NodeHoverActions to avoid hover interference */}
-      <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center z-20 pointer-events-auto">
-        <div className="w-8 h-0.5 bg-gray-400 pointer-events-none"></div>
-        <div
-          onMouseDown={handleAddNode}
+      {/* Connection line with plus icon - positioned completely outside the node to avoid event conflicts */}
+      <div 
+        className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center z-50"
+        style={{ pointerEvents: 'none' }}
+      >
+        <div className="w-8 h-0.5 bg-gray-400"></div>
+        <button
+          onClick={handleAddNode}
+          onMouseDown={(e) => e.stopPropagation()}
           className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
           title="Add node"
           style={{ pointerEvents: 'auto' }}
         >
           <Plus className="w-2.5 h-2.5" />
-        </div>
+        </button>
       </div>
     </div>
   );
