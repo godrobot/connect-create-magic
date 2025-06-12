@@ -51,7 +51,7 @@ const PropertiesPanel: React.FC = () => {
 
   const config = (selectedNode.data.config as NodeConfig) || {};
 
-  const renderWebhookProperties = () => (
+  const renderWebhookProperties = (): React.ReactNode => (
     <div className="space-y-4">
       <div>
         <Label>URL</Label>
@@ -78,7 +78,7 @@ const PropertiesPanel: React.FC = () => {
     </div>
   );
 
-  const renderEmailProperties = () => (
+  const renderEmailProperties = (): React.ReactNode => (
     <div className="space-y-4">
       <div>
         <Label>To</Label>
@@ -107,7 +107,7 @@ const PropertiesPanel: React.FC = () => {
     </div>
   );
 
-  const renderConditionProperties = () => (
+  const renderConditionProperties = (): React.ReactNode => (
     <div className="space-y-4">
       <div>
         <Label>Operator</Label>
@@ -135,7 +135,7 @@ const PropertiesPanel: React.FC = () => {
     </div>
   );
 
-  const renderTriggerProperties = () => (
+  const renderTriggerProperties = (): React.ReactNode => (
     <div className="space-y-4">
       <div>
         <Label>Event Type</Label>
@@ -163,20 +163,20 @@ const PropertiesPanel: React.FC = () => {
     </div>
   );
 
-  const getPropertiesContent = (): JSX.Element => {
+  const getPropertiesContent = (): React.ReactNode => {
     if (!selectedNode?.type) {
       return <div className="text-muted-foreground">No properties available</div>;
     }
 
     switch (selectedNode.type) {
       case 'webhook':
-        return <>{renderWebhookProperties()}</>;
+        return renderWebhookProperties();
       case 'email':
-        return <>{renderEmailProperties()}</>;
+        return renderEmailProperties();
       case 'condition':
-        return <>{renderConditionProperties()}</>;
+        return renderConditionProperties();
       case 'trigger':
-        return <>{renderTriggerProperties()}</>;
+        return renderTriggerProperties();
       default:
         return <div className="text-muted-foreground">No properties available</div>;
     }
