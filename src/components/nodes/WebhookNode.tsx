@@ -48,14 +48,7 @@ const WebhookNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
         onPlay={() => console.log('Run webhook', id)}
         onStop={() => console.log('Stop webhook', id)}
       >
-        <Card className={`p-3 min-w-48 border border-gray-300 bg-background shadow-md relative`}>
-          <Handle 
-            type="target" 
-            position={Position.Left} 
-            className="w-4 h-4 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
-            onClick={handleHandleClick}
-            onMouseDown={handleHandleClick}
-          />
+        <Card className={`p-3 min-w-48 border border-gray-300 bg-background shadow-md rounded-l-full`}>
           <Handle 
             type="source" 
             position={Position.Right} 
