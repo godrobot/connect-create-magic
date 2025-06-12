@@ -1,62 +1,111 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { 
+  Settings, 
+  Save, 
+  Trash2,
+  Clock,
+  Mail,
+  Database,
+  Globe,
+  Zap,
+  GitBranch,
+  Webhook
+} from 'lucide-react';
 import { useWorkflow } from '../context/WorkflowContext';
 
 interface PropertiesPanelProps {
   onSave: () => void;
 }
 
-interface NodeConfig {
-  [key: string]: any;
-  event?: string;
-  interval?: string;
-  to?: string;
-  subject?: string;
-  body?: string;
-  url?: string;
-  method?: string;
-  field?: string;
-  operator?: string;
-  value?: string;
-  operation?: string;
-}
-
 const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
-  const { selectedNode, setNodes } = useWorkflow();
-  const [config, setConfig] = React.useState<NodeConfig>(selectedNode?.data?.config || {});
+  const { selectedNode, setSelectedNode, setNodes } = useWorkflow();
+  const [nodeData, setNodeData] = useState(selectedNode?.data || {});
 
-  React.useEffect(() => {
-    setConfig(selectedNode?.data?.config || {});
-  }, [selectedNode]);
+  if (!selectedNode) {
+    return (
+      <div className="h-full flex items-center justify-center p-6">
+        <div className="text-center text-muted-foreground">
+          <Settings className="w-12 h-12 mx-auto mb-4 opacity-50" />
+          <p>Select a node to edit its properties</p>
+        </div>
+      </div>
+    );
+  }
+
+  const updateNodeData = (key: string, value: any) => {
+    const updatedData = { ...nodeData, [key]: value };
+    setNodeData(updatedData);
+    
+    setNodes(prev => prev.map(node => 
+      node.id === selectedNode.id 
+        ? { ...node, data: { ...node.data, ...updatedData } }
+        : node
+    ));
+  };
+
+  const updateNodeConfig = (key: string, value: any) => {
+    const updatedConfig = { ...nodeData.config, [key]: value };
+    updateNodeData('config', updatedConfig);
+  };
 
   const handleSave = () => {
-    if (selectedNode) {
-      setNodes(prev => prev.map(node => 
-        node.id === selectedNode.id 
-          ? { ...node, data: { ...node.data, config } }
-          : node
-      ));
-    }
+    setSelectedNode(null);
     onSave();
   };
 
-  const getPropertiesContent = (): React.ReactNode => {
-    if (!selectedNode) return null;
+  const handleDelete = () => {
+    setNodes(prev => prev.filter(node => node.id !== selectedNode.id));
+    setSelectedNode(null);
+    onSave();
+  };
 
-    switch (selectedNode.type) {
+  const getNodeIcon = (type: string): React.ReactNode => {
+    switch (type) {
+      case 'trigger':
+        return <Zap className="w-5 h-5 text-green-600" />;
+      case 'action':
+        return <Zap className="w-5 h-5 text-blue-600" />;
+      case 'condition':
+        return <GitBranch className="w-5 h-5 text-orange-600" />;
+      case 'webhook':
+        return <Webhook className="w-5 h-5 text-purple-600" />;
+      case 'email':
+        return <Mail className="w-5 h-5 text-red-600" />;
+      case 'database':
+        return <Database className="w-5 h-5 text-yellow-600" />;
+      case 'api':
+        return <Globe className="w-5 h-5 text-indigo-600" />;
+      default:
+        return <Settings className="w-5 h-5 text-gray-600" />;
+    }
+  };
+
+  const getPropertiesContent = (): React.ReactNode => {
+    const nodeType = selectedNode.type;
+    
+    switch (nodeType) {
       case 'trigger':
         return (
           <div className="space-y-4">
             <div>
-              <Label htmlFor="event">Event Type</Label>
-              <Select value={config.event || 'manual'} onValueChange={(value) => setConfig({...config, event: value})}>
+              <Label htmlFor="trigger-type">Trigger Type</Label>
+              <Select
+                value={nodeData.config?.event || 'manual'}
+                onValueChange={(value) => updateNodeConfig('event', value)}
+              >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select event type" />
+                  <SelectValue placeholder="Select trigger type" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="manual">Manual</SelectItem>
@@ -65,14 +114,15 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
                 </SelectContent>
               </Select>
             </div>
-            {config.event === 'schedule' && (
+            
+            {nodeData.config?.event === 'schedule' && (
               <div>
                 <Label htmlFor="interval">Interval</Label>
                 <Input
                   id="interval"
-                  value={config.interval || ''}
-                  onChange={(e) => setConfig({...config, interval: e.target.value})}
-                  placeholder="e.g., 5 minutes"
+                  value={nodeData.config?.interval || ''}
+                  onChange={(e) => updateNodeConfig('interval', e.target.value)}
+                  placeholder="e.g., 5 minutes, 1 hour"
                 />
               </div>
             )}
@@ -83,32 +133,137 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
         return (
           <div className="space-y-4">
             <div>
-              <Label htmlFor="to">To</Label>
+              <Label htmlFor="email-to">To</Label>
               <Input
-                id="to"
-                value={config.to || ''}
-                onChange={(e) => setConfig({...config, to: e.target.value})}
+                id="email-to"
+                value={nodeData.config?.to || ''}
+                onChange={(e) => updateNodeConfig('to', e.target.value)}
                 placeholder="recipient@example.com"
               />
             </div>
             <div>
-              <Label htmlFor="subject">Subject</Label>
+              <Label htmlFor="email-subject">Subject</Label>
               <Input
-                id="subject"
-                value={config.subject || ''}
-                onChange={(e) => setConfig({...config, subject: e.target.value})}
+                id="email-subject"
+                value={nodeData.config?.subject || ''}
+                onChange={(e) => updateNodeConfig('subject', e.target.value)}
                 placeholder="Email subject"
               />
             </div>
             <div>
-              <Label htmlFor="body">Body</Label>
-              <textarea
-                id="body"
-                className="w-full p-2 border rounded-md"
-                value={config.body || ''}
-                onChange={(e) => setConfig({...config, body: e.target.value})}
+              <Label htmlFor="email-body">Body</Label>
+              <Textarea
+                id="email-body"
+                value={nodeData.config?.body || ''}
+                onChange={(e) => updateNodeConfig('body', e.target.value)}
                 placeholder="Email content"
                 rows={4}
+              />
+            </div>
+          </div>
+        );
+
+      case 'database':
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="db-operation">Operation</Label>
+              <Select
+                value={nodeData.config?.operation || 'create'}
+                onValueChange={(value) => updateNodeConfig('operation', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select operation" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="create">Create</SelectItem>
+                  <SelectItem value="read">Read</SelectItem>
+                  <SelectItem value="update">Update</SelectItem>
+                  <SelectItem value="delete">Delete</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="db-table">Table</Label>
+              <Input
+                id="db-table"
+                value={nodeData.config?.table || ''}
+                onChange={(e) => updateNodeConfig('table', e.target.value)}
+                placeholder="Table name"
+              />
+            </div>
+          </div>
+        );
+
+      case 'api':
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="api-method">Method</Label>
+              <Select
+                value={nodeData.config?.method || 'GET'}
+                onValueChange={(value) => updateNodeConfig('method', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select method" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="GET">GET</SelectItem>
+                  <SelectItem value="POST">POST</SelectItem>
+                  <SelectItem value="PUT">PUT</SelectItem>
+                  <SelectItem value="DELETE">DELETE</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="api-url">URL</Label>
+              <Input
+                id="api-url"
+                value={nodeData.config?.url || ''}
+                onChange={(e) => updateNodeConfig('url', e.target.value)}
+                placeholder="https://api.example.com/endpoint"
+              />
+            </div>
+          </div>
+        );
+
+      case 'condition':
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="condition-field">Field</Label>
+              <Input
+                id="condition-field"
+                value={nodeData.config?.field || ''}
+                onChange={(e) => updateNodeConfig('field', e.target.value)}
+                placeholder="Field to check"
+              />
+            </div>
+            <div>
+              <Label htmlFor="condition-operator">Operator</Label>
+              <Select
+                value={nodeData.config?.operator || 'equals'}
+                onValueChange={(value) => updateNodeConfig('operator', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select operator" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="equals">Equals</SelectItem>
+                  <SelectItem value="not_equals">Not Equals</SelectItem>
+                  <SelectItem value="greater_than">Greater Than</SelectItem>
+                  <SelectItem value="less_than">Less Than</SelectItem>
+                  <SelectItem value="contains">Contains</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="condition-value">Value</Label>
+              <Input
+                id="condition-value"
+                value={nodeData.config?.value || ''}
+                onChange={(e) => updateNodeConfig('value', e.target.value)}
+                placeholder="Value to compare"
               />
             </div>
           </div>
@@ -118,19 +273,22 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
         return (
           <div className="space-y-4">
             <div>
-              <Label htmlFor="url">URL</Label>
+              <Label htmlFor="webhook-url">Webhook URL</Label>
               <Input
-                id="url"
-                value={config.url || ''}
-                onChange={(e) => setConfig({...config, url: e.target.value})}
-                placeholder="https://api.example.com/webhook"
+                id="webhook-url"
+                value={nodeData.config?.url || ''}
+                onChange={(e) => updateNodeConfig('url', e.target.value)}
+                placeholder="https://example.com/webhook"
               />
             </div>
             <div>
-              <Label htmlFor="method">Method</Label>
-              <Select value={config.method || 'POST'} onValueChange={(value) => setConfig({...config, method: value})}>
+              <Label htmlFor="webhook-method">Method</Label>
+              <Select
+                value={nodeData.config?.method || 'POST'}
+                onValueChange={(value) => updateNodeConfig('method', value)}
+              >
                 <SelectTrigger>
-                  <SelectValue placeholder="HTTP Method" />
+                  <SelectValue placeholder="Select method" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="GET">GET</SelectItem>
@@ -143,55 +301,16 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
           </div>
         );
 
-      case 'condition':
-        return (
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="field">Field</Label>
-              <Input
-                id="field"
-                value={config.field || ''}
-                onChange={(e) => setConfig({...config, field: e.target.value})}
-                placeholder="Field to check"
-              />
-            </div>
-            <div>
-              <Label htmlFor="operator">Operator</Label>
-              <Select value={config.operator || 'equals'} onValueChange={(value) => setConfig({...config, operator: value})}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select operator" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="equals">Equals</SelectItem>
-                  <SelectItem value="not_equals">Not Equals</SelectItem>
-                  <SelectItem value="contains">Contains</SelectItem>
-                  <SelectItem value="greater_than">Greater Than</SelectItem>
-                  <SelectItem value="less_than">Less Than</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label htmlFor="value">Value</Label>
-              <Input
-                id="value"
-                value={config.value || ''}
-                onChange={(e) => setConfig({...config, value: e.target.value})}
-                placeholder="Value to compare"
-              />
-            </div>
-          </div>
-        );
-
       default:
         return (
           <div className="space-y-4">
             <div>
-              <Label htmlFor="operation">Operation</Label>
+              <Label htmlFor="action-type">Action Type</Label>
               <Input
-                id="operation"
-                value={config.operation || ''}
-                onChange={(e) => setConfig({...config, operation: e.target.value})}
-                placeholder="Operation to perform"
+                id="action-type"
+                value={nodeData.config?.action || ''}
+                onChange={(e) => updateNodeConfig('action', e.target.value)}
+                placeholder="Action to perform"
               />
             </div>
           </div>
@@ -199,48 +318,105 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
     }
   };
 
-  if (!selectedNode) {
-    return null;
-  }
-
   return (
-    <div className="p-6 h-full overflow-y-auto">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold">
-            {selectedNode.data.label} Settings
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="label">Label</Label>
-              <Input
-                id="label"
-                value={selectedNode.data.label || ''}
-                onChange={(e) => {
-                  if (selectedNode) {
-                    setNodes(prev => prev.map(node => 
-                      node.id === selectedNode.id 
-                        ? { ...node, data: { ...node.data, label: e.target.value } }
-                        : node
-                    ));
-                  }
-                }}
-                placeholder="Node label"
-              />
-            </div>
-            
-            {getPropertiesContent()}
-            
-            <div className="flex gap-2 pt-4">
-              <Button onClick={handleSave} className="flex-1">
-                Save
-              </Button>
-            </div>
+    <div className="h-full flex flex-col bg-background">
+      <div className="p-4 border-b">
+        <div className="flex items-center gap-3 mb-2">
+          {getNodeIcon(selectedNode.type)}
+          <div>
+            <h3 className="font-semibold text-lg">
+              {selectedNode.type.charAt(0).toUpperCase() + selectedNode.type.slice(1)} Node
+            </h3>
+            <Badge variant="secondary" className="text-xs">
+              {selectedNode.id}
+            </Badge>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
+
+      <div className="flex-1 overflow-auto p-4">
+        <Tabs defaultValue="properties" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="properties">Properties</TabsTrigger>
+            <TabsTrigger value="general">General</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="properties" className="space-y-4 mt-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Configuration</CardTitle>
+                <CardDescription>
+                  Configure the specific settings for this {selectedNode.type} node
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {getPropertiesContent()}
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="general" className="space-y-4 mt-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">General Settings</CardTitle>
+                <CardDescription>
+                  Basic node configuration and metadata
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label htmlFor="node-label">Label</Label>
+                  <Input
+                    id="node-label"
+                    value={nodeData.label || ''}
+                    onChange={(e) => updateNodeData('label', e.target.value)}
+                    placeholder="Node label"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="node-description">Description</Label>
+                  <Textarea
+                    id="node-description"
+                    value={nodeData.description || ''}
+                    onChange={(e) => updateNodeData('description', e.target.value)}
+                    placeholder="Node description"
+                    rows={3}
+                  />
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="node-enabled"
+                    checked={nodeData.enabled !== false}
+                    onCheckedChange={(checked) => updateNodeData('enabled', checked)}
+                  />
+                  <Label htmlFor="node-enabled">Enabled</Label>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+
+      <Separator />
+      
+      <div className="p-4 space-y-2">
+        <Button onClick={handleSave} className="w-full" size="sm">
+          <Save className="w-4 h-4 mr-2" />
+          Save Changes
+        </Button>
+        
+        <Button 
+          onClick={handleDelete} 
+          variant="destructive" 
+          className="w-full" 
+          size="sm"
+        >
+          <Trash2 className="w-4 h-4 mr-2" />
+          Delete Node
+        </Button>
+      </div>
     </div>
   );
 };
