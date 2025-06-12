@@ -46,7 +46,7 @@ const ActionNode = ({ data, selected, type, id, ...nodeProps }: any) => {
       sourceNodeId: id,
       sourcePosition: { x: nodeProps.position.x + 250, y: nodeProps.position.y }
     });
-    setSelectedNode(null); // This will trigger the sidebar to open for node selection
+    setSelectedNode(null);
   };
 
   return (
@@ -58,7 +58,6 @@ const ActionNode = ({ data, selected, type, id, ...nodeProps }: any) => {
     >
       <div className="relative group">
         <Card className={`p-3 min-w-48 border ${selected ? 'border-primary border-2' : 'border-gray-300'} bg-background shadow-md relative`}>
-          {/* Left and right connectors - larger size */}
           <Handle 
             type="target" 
             position={Position.Left} 
@@ -85,12 +84,12 @@ const ActionNode = ({ data, selected, type, id, ...nodeProps }: any) => {
           </div>
         </Card>
 
-        {/* Connection line with plus icon - positioned at the right edge */}
-        <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center opacity-0 group-hover:opacity-100 transition-opacity">
-          <div className="w-6 h-0.5 bg-gray-400"></div>
+        {/* Connection line with plus icon extending from the right */}
+        <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          <div className="w-8 h-0.5 bg-gray-300"></div>
           <button
             onClick={handleAddNode}
-            className="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition-colors"
+            className="w-5 h-5 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition-colors pointer-events-auto"
             title="Add node"
           >
             <Plus className="w-3 h-3" />
