@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -163,7 +162,7 @@ const PropertiesPanel: React.FC = () => {
     </div>
   );
 
-  const getPropertiesContent = () => {
+  const getPropertiesContent = (): React.ReactNode => {
     if (!selectedNode?.type) {
       return <div className="text-muted-foreground">No properties available</div>;
     }
