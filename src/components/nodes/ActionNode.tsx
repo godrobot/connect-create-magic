@@ -91,12 +91,12 @@ const ActionNode = ({ data, selected, type, id, ...nodeProps }: any) => {
           </div>
         </Card>
 
-        {/* Connection line with plus icon */}
-        <div className="absolute top-1/2 -right-8 transform -translate-y-1/2 flex items-center">
+        {/* Connection line with plus icon - positioned at the right edge */}
+        <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center">
           <div className="w-6 h-0.5 bg-gray-300"></div>
           <button
             onClick={handleAddNode}
-            className="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center ml-1 transition-colors"
+            className="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition-colors"
             title="Add node"
           >
             <Plus className="w-3 h-3" />
