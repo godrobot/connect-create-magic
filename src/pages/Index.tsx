@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import WorkflowCanvas from '../components/WorkflowCanvas';
 import NodePalette from '../components/NodePalette';
@@ -14,12 +15,12 @@ const WorkflowContent = () => {
 
   // Show properties panel when a node is selected
   React.useEffect(() => {
-    if (selectedNode) {
+    if (selectedNode && !pendingConnection) { // Only show properties if no pending connection
       console.log('Selected node changed:', selectedNode);
       setShowPropertiesPanel(true);
       setShowNodePalette(false);
     }
-  }, [selectedNode]);
+  }, [selectedNode, pendingConnection]);
 
   // Show node palette when there's a pending connection
   React.useEffect(() => {
@@ -28,8 +29,9 @@ const WorkflowContent = () => {
       console.log('Setting showNodePalette to true');
       setShowNodePalette(true);
       setShowPropertiesPanel(false);
+      setSelectedNode(null); // Clear selected node when showing palette
     }
-  }, [pendingConnection]);
+  }, [pendingConnection, setSelectedNode]);
 
   const handleAddNodeClick = () => {
     setShowNodePalette(true);
