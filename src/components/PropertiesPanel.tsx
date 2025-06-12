@@ -168,7 +168,7 @@ const PropertiesPanel = () => {
     </div>
   );
 
-  const getPropertiesContent = () => {
+  const getPropertiesContent = (): React.ReactNode => {
     switch (selectedNode.type) {
       case 'webhook':
         return renderWebhookProperties();

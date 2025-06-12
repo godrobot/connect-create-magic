@@ -10,7 +10,8 @@ import {
   useEdgesState,
   ConnectionMode,
   Node,
-  BackgroundVariant
+  BackgroundVariant,
+  Edge
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useWorkflow } from '../context/WorkflowContext';
@@ -61,11 +62,13 @@ const WorkflowCanvas = () => {
 
   const onConnect = useCallback(
     (params: Connection) => {
-      const newEdge = {
+      const newEdge: Edge = {
         ...params,
         id: `edge-${Date.now()}`,
         type: 'smoothstep',
-        animated: true
+        animated: true,
+        source: params.source!,
+        target: params.target!
       };
       setLocalEdges((eds) => addEdge(newEdge, eds));
     },
