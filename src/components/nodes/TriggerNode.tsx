@@ -18,7 +18,10 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
   };
 
   const handleAddNode = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
+    console.log('Plus icon clicked for node:', id);
+    
     setPendingConnection({
       sourceNodeId: id,
       sourcePosition: { x: nodeProps.position.x + 250, y: nodeProps.position.y }
@@ -34,7 +37,7 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
       onStop={() => console.log('Stop trigger', id)}
     >
       <div className="relative">
-        <Card className={`p-3 min-w-48 border ${selected ? 'border-primary border-2' : 'border-gray-300'} bg-background shadow-md rounded-l-full`}>
+        <Card className={`p-3 min-w-48 border border-gray-300 bg-background shadow-md rounded-l-full`}>
           <Handle 
             type="source" 
             position={Position.Right} 
@@ -62,12 +65,14 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
         </Card>
 
         {/* Connection line with plus icon extending from the right */}
-        <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center pointer-events-none">
+        <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center">
           <div className="w-8 h-0.5 bg-gray-400"></div>
           <button
             onClick={handleAddNode}
-            className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors pointer-events-auto"
+            onMouseDown={(e) => e.stopPropagation()}
+            className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-sm flex items-center justify-center transition-colors cursor-pointer z-10"
             title="Add node"
+            type="button"
           >
             <Plus className="w-2.5 h-2.5" />
           </button>
