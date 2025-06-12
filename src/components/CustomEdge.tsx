@@ -77,14 +77,6 @@ const CustomEdge: React.FC<EdgeProps> = ({
     });
   };
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
   return (
     <>
       <BaseEdge 
@@ -98,9 +90,9 @@ const CustomEdge: React.FC<EdgeProps> = ({
         d={edgePath}
         fill="none"
         stroke="transparent"
-        strokeWidth={30}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        strokeWidth={20}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         style={{ cursor: 'pointer' }}
       />
       
@@ -112,8 +104,8 @@ const CustomEdge: React.FC<EdgeProps> = ({
               transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
               pointerEvents: 'auto'
             }}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
             <div className="flex gap-1">
               <button
