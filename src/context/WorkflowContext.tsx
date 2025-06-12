@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { Node, Edge } from '@xyflow/react';
 
@@ -32,9 +31,10 @@ export const WorkflowProvider: React.FC<WorkflowProviderProps> = ({ children }) 
   const [selectedNode, setSelectedNode] = useState<Node | null>(null);
 
   const addNode = (type: string, position: { x: number; y: number }) => {
+    const nodeType = getReactFlowNodeType(type);
     const newNode: Node = {
       id: `${type}-${Date.now()}`,
-      type,
+      type: nodeType,
       position,
       data: {
         label: getNodeLabel(type),
@@ -42,6 +42,23 @@ export const WorkflowProvider: React.FC<WorkflowProviderProps> = ({ children }) 
       }
     };
     setNodes(prev => [...prev, newNode]);
+  };
+
+  const getReactFlowNodeType = (type: string) => {
+    // Trigger nodes
+    if (['component-action', 'manual-trigger', 'schedule'].includes(type)) {
+      return 'trigger';
+    }
+    // Webhook nodes
+    if (type === 'webhook') {
+      return 'webhook';
+    }
+    // Condition nodes
+    if (type === 'condition') {
+      return 'condition';
+    }
+    // All other nodes are action nodes
+    return 'action';
   };
 
   const getNodeLabel = (type: string) => {

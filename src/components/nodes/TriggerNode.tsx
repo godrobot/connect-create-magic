@@ -25,7 +25,12 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
       onStop={() => console.log('Stop trigger', id)}
     >
       <Card className={`p-3 min-w-48 border-2 ${selected ? 'border-primary' : 'border-border'} bg-background shadow-md`}>
-        <Handle type="source" position={Position.Right} className="w-3 h-3 !bg-gray-300 !border-gray-300" />
+        {/* Only right connector for triggers */}
+        <Handle 
+          type="source" 
+          position={Position.Right} 
+          className="w-4 h-4 !bg-gray-300 !border-2 !border-gray-400 hover:!bg-gray-400 transition-colors" 
+        />
         
         <div className="flex items-center gap-3">
           <div className="p-2 bg-green-100 rounded-lg">

@@ -2,6 +2,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useWorkflow } from '../context/WorkflowContext';
@@ -31,7 +32,11 @@ interface NodeConfig {
   fileType?: string;
 }
 
-const PropertiesPanel: React.FC = () => {
+interface PropertiesPanelProps {
+  onSave?: () => void;
+}
+
+const PropertiesPanel: React.FC<PropertiesPanelProps> = ({ onSave }) => {
   const { selectedNode, setNodes } = useWorkflow();
 
   const updateNodeData = (updates: Partial<NodeConfig>) => {
@@ -51,6 +56,10 @@ const PropertiesPanel: React.FC = () => {
           }
         : node
     ));
+  };
+
+  const handleSave = () => {
+    onSave?.();
   };
 
   if (!selectedNode) {
@@ -510,11 +519,21 @@ const PropertiesPanel: React.FC = () => {
   };
 
   return (
-    <div className="w-80 border-l bg-background p-4">
-      <Card className="p-4">
-        <h3 className="font-semibold mb-4">{selectedNode.data.label} Properties</h3>
+    <div className="h-full flex flex-col">
+      <div className="p-4 border-b">
+        <h2 className="text-lg font-semibold">{selectedNode.data.label}</h2>
+        <p className="text-sm text-muted-foreground">Configure node settings</p>
+      </div>
+      
+      <div className="flex-1 overflow-auto p-4">
         {getPropertiesContent()}
-      </Card>
+      </div>
+      
+      <div className="p-4 border-t">
+        <Button onClick={handleSave} className="w-full">
+          Save Settings
+        </Button>
+      </div>
     </div>
   );
 };

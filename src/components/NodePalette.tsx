@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -110,55 +111,50 @@ const nodeCategories = [
   }
 ];
 
-const NodePalette = () => {
-  const { addNode } = useWorkflow();
+interface NodePaletteProps {
+  onNodeAdded?: () => void;
+}
 
-  const handleNodeDrag = (event: React.DragEvent, nodeType: string) => {
-    event.dataTransfer.setData('application/reactflow', nodeType);
-    event.dataTransfer.effectAllowed = 'move';
-  };
+const NodePalette: React.FC<NodePaletteProps> = ({ onNodeAdded }) => {
+  const { addNode } = useWorkflow();
 
   const handleNodeClick = (nodeType: string) => {
     addNode(nodeType, { x: 250, y: 250 });
+    onNodeAdded?.();
   };
 
   return (
-    <Card className="w-80 h-full rounded-none border-r border-border">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Settings className="w-5 h-5" />
-          Node Palette
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-0">
-        <ScrollArea className="h-full">
-          <div className="p-4 space-y-6">
-            {nodeCategories.map((category) => (
-              <div key={category.title}>
-                <h3 className="text-sm font-semibold text-muted-foreground mb-3">
-                  {category.title}
-                </h3>
-                <div className="space-y-2">
-                  {category.nodes.map((node) => (
-                    <Button
-                      key={`${node.type}-${node.label}`}
-                      variant="ghost"
-                      className="w-full justify-start h-auto p-3 hover:bg-accent"
-                      draggable
-                      onDragStart={(e) => handleNodeDrag(e, node.type)}
-                      onClick={() => handleNodeClick(node.type)}
-                    >
-                      <node.icon className={`w-4 h-4 mr-3 ${node.color}`} />
-                      <span className="text-sm">{node.label}</span>
-                    </Button>
-                  ))}
-                </div>
+    <div className="h-full">
+      <div className="p-4 border-b">
+        <h2 className="text-lg font-semibold">Add Node</h2>
+        <p className="text-sm text-muted-foreground">Choose a node to add to your workflow</p>
+      </div>
+      
+      <ScrollArea className="h-full pb-16">
+        <div className="p-4 space-y-6">
+          {nodeCategories.map((category) => (
+            <div key={category.title}>
+              <h3 className="text-sm font-semibold text-muted-foreground mb-3">
+                {category.title}
+              </h3>
+              <div className="space-y-2">
+                {category.nodes.map((node) => (
+                  <Button
+                    key={`${node.type}-${node.label}`}
+                    variant="ghost"
+                    className="w-full justify-start h-auto p-3 hover:bg-accent"
+                    onClick={() => handleNodeClick(node.type)}
+                  >
+                    <node.icon className={`w-4 h-4 mr-3 ${node.color}`} />
+                    <span className="text-sm">{node.label}</span>
+                  </Button>
+                ))}
               </div>
-            ))}
-          </div>
-        </ScrollArea>
-      </CardContent>
-    </Card>
+            </div>
+          ))}
+        </div>
+      </ScrollArea>
+    </div>
   );
 };
 
