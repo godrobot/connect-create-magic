@@ -40,7 +40,7 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
       onStop={() => console.log('Stop trigger', id)}
     >
       <div className="relative group">
-        <Card className={`p-3 min-w-48 border border-gray-300 ${selected ? 'border-primary border-2' : ''} bg-background shadow-md rounded-l-full`}>
+        <Card className={`p-3 min-w-48 border ${selected ? 'border-primary border-2' : 'border-gray-300'} bg-background shadow-md rounded-l-full`}>
           {/* Right connector for triggers - larger size */}
           <Handle 
             type="source" 
@@ -69,11 +69,11 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
         </Card>
 
         {/* Connection line with plus icon - positioned at the right edge */}
-        <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center">
+        <div className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center opacity-0 group-hover:opacity-100 transition-opacity">
           <div className="w-6 h-0.5 bg-gray-400"></div>
           <button
             onClick={handleAddNode}
-            className="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition-colors opacity-0 group-hover:opacity-100"
+            className="w-6 h-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition-colors"
             title="Add node"
           >
             <Plus className="w-3 h-3" />
