@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { Zap, Plus } from 'lucide-react';
@@ -16,7 +17,8 @@ const TriggerNode = ({ data, selected, id, ...nodeProps }: any) => {
     setSelectedNode({ id, data, type: 'trigger', ...nodeProps });
   };
 
-  const handleAddNode = () => {
+  const handleAddNode = (e: React.MouseEvent) => {
+    e.stopPropagation();
     // Set up pending connection and trigger sidebar
     setPendingConnection({
       sourceNodeId: id,

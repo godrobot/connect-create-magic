@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { 
@@ -39,7 +40,8 @@ const ActionNode = ({ data, selected, type, id, ...nodeProps }: any) => {
     setSelectedNode({ id, data, type, ...nodeProps });
   };
 
-  const handleAddNode = () => {
+  const handleAddNode = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setPendingConnection({
       sourceNodeId: id,
       sourcePosition: { x: nodeProps.position.x + 250, y: nodeProps.position.y }
