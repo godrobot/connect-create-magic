@@ -82,7 +82,11 @@ const CustomEdge: React.FC<EdgeProps> = ({
       <BaseEdge 
         path={edgePath} 
         markerEnd={markerEnd} 
-        style={{ ...style, stroke: isHovered ? '#6B7280' : '#9CA3AF', strokeWidth: 2 }}
+        style={{ 
+          ...style, 
+          stroke: isHovered ? '#6B7280' : '#9CA3AF', 
+          strokeWidth: 2 
+        }}
       />
       
       {/* Invisible hover area around the edge path */}
@@ -96,7 +100,7 @@ const CustomEdge: React.FC<EdgeProps> = ({
         style={{ cursor: 'pointer' }}
       />
       
-      {/* Only render buttons when hovered */}
+      {/* Only render our custom buttons when hovered - no other icons should appear */}
       {isHovered && (
         <EdgeLabelRenderer>
           <div
