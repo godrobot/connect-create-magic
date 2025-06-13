@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+
+import React, { useCallback, useEffect } from 'react';
 import {
   ReactFlow,
   addEdge,
@@ -10,7 +11,8 @@ import {
   ConnectionMode,
   Node,
   BackgroundVariant,
-  Edge
+  Edge,
+  SelectionMode
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useWorkflow } from '../context/WorkflowContext';
@@ -71,7 +73,7 @@ const WorkflowCanvas = () => {
         ...params,
         id: `edge-${Date.now()}`,
         type: 'smoothstep',
-        animated: false, // Remove animation
+        animated: false,
         source: params.source!,
         target: params.target!
       };
@@ -91,6 +93,33 @@ const WorkflowCanvas = () => {
     setSelectedNode(null);
   }, [setSelectedNode]);
 
+  // Handle keyboard events for deletion
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Delete' || event.key === 'Backspace') {
+        // Get selected nodes
+        const selectedNodes = localNodes.filter(node => node.selected);
+        if (selectedNodes.length > 0) {
+          // Delete selected nodes
+          const selectedNodeIds = selectedNodes.map(node => node.id);
+          setLocalNodes(nodes => nodes.filter(node => !selectedNodeIds.includes(node.id)));
+          
+          // Delete edges connected to selected nodes
+          setLocalEdges(edges => edges.filter(edge => 
+            !selectedNodeIds.includes(edge.source) && !selectedNodeIds.includes(edge.target)
+          ));
+          
+          setSelectedNode(null);
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [localNodes, setLocalNodes, setLocalEdges, setSelectedNode]);
+
   return (
     <div className="w-full h-full">
       <ReactFlow
@@ -104,6 +133,11 @@ const WorkflowCanvas = () => {
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         connectionMode={ConnectionMode.Loose}
+        selectionMode={SelectionMode.Partial}
+        selectNodesOnDrag={false}
+        panOnDrag={[1, 2]}
+        selectionOnDrag={true}
+        multiSelectionKeyCode={null}
         fitView
         className="bg-gray-50"
       >
