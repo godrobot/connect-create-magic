@@ -29,7 +29,16 @@ import {
   Zap,
   Webhook,
   Database,
-  Globe
+  Globe,
+  Clipboard,
+  ArrowUp,
+  ArrowDown,
+  Layers,
+  X,
+  Navigation,
+  SkipBack,
+  SkipForward,
+  RotateCcw
 } from 'lucide-react';
 import { useWorkflow } from '../context/WorkflowContext';
 
@@ -38,66 +47,66 @@ const nodeCategories = [
     title: 'Triggers',
     nodes: [
       { type: 'component-action', label: 'Component Action', icon: Zap, color: 'text-green-600' },
-      { type: 'manual-trigger', label: 'Manual Trigger', icon: Zap, color: 'text-green-600' },
-      { type: 'schedule', label: 'Schedule', icon: Zap, color: 'text-green-600' },
+      { type: 'manual-trigger', label: 'Manual Trigger', icon: Play, color: 'text-green-600' },
+      { type: 'schedule', label: 'Schedule', icon: Calendar, color: 'text-green-600' },
       { type: 'webhook', label: 'Webhook', icon: Webhook, color: 'text-blue-600' }
     ]
   },
   {
     title: 'UI Actions',
     nodes: [
-      { type: 'none', label: 'None', icon: Zap, color: 'text-blue-600' },
-      { type: 'show-dialog', label: 'Show Dialog', icon: Zap, color: 'text-blue-600' },
-      { type: 'show-snackbar', label: 'Show Snackbar', icon: Zap, color: 'text-blue-600' },
-      { type: 'open-overlay', label: 'Open Overlay', icon: Zap, color: 'text-blue-600' },
-      { type: 'close-overlay', label: 'Close Overlay', icon: Zap, color: 'text-blue-600' },
-      { type: 'go-to-screen', label: 'Go To Screen', icon: Zap, color: 'text-blue-600' }
+      { type: 'none', label: 'None', icon: X, color: 'text-blue-600' },
+      { type: 'show-dialog', label: 'Show Dialog', icon: MessageSquare, color: 'text-blue-600' },
+      { type: 'show-snackbar', label: 'Show Snackbar', icon: MessageSquare, color: 'text-blue-600' },
+      { type: 'open-overlay', label: 'Open Overlay', icon: Layers, color: 'text-blue-600' },
+      { type: 'close-overlay', label: 'Close Overlay', icon: X, color: 'text-blue-600' },
+      { type: 'go-to-screen', label: 'Go To Screen', icon: Navigation, color: 'text-blue-600' }
     ]
   },
   {
     title: 'Communication',
     nodes: [
-      { type: 'compose-email', label: 'Compose Email', icon: Mail, color: 'text-red-600' },
+      { type: 'compose-email', label: 'Compose Email', icon: Edit, color: 'text-red-600' },
       { type: 'phone-call', label: 'Make Phone Call', icon: Phone, color: 'text-red-600' },
-      { type: 'sms', label: 'Start SMS', icon: Mail, color: 'text-red-600' },
-      { type: 'whatsapp', label: 'Start WhatsApp', icon: Mail, color: 'text-red-600' },
+      { type: 'sms', label: 'Start SMS', icon: MessageSquare, color: 'text-red-600' },
+      { type: 'whatsapp', label: 'Start WhatsApp', icon: MessageSquare, color: 'text-red-600' },
       { type: 'send-email', label: 'Send Email', icon: Mail, color: 'text-red-600' }
     ]
   },
   {
     title: 'Data & Files',
     nodes: [
-      { type: 'copy-clipboard', label: 'Copy to Clipboard', icon: Zap, color: 'text-blue-600' },
-      { type: 'download', label: 'Download', icon: Zap, color: 'text-blue-600' },
-      { type: 'share', label: 'Share', icon: Zap, color: 'text-blue-600' },
+      { type: 'copy-clipboard', label: 'Copy to Clipboard', icon: Clipboard, color: 'text-blue-600' },
+      { type: 'download', label: 'Download', icon: Download, color: 'text-blue-600' },
+      { type: 'share', label: 'Share', icon: Share, color: 'text-blue-600' },
       { type: 'open-file', label: 'Open File', icon: FileText, color: 'text-gray-600' },
       { type: 'open-link', label: 'Open Link', icon: Globe, color: 'text-indigo-600' },
-      { type: 'open-map', label: 'Open Map', icon: Zap, color: 'text-blue-600' }
+      { type: 'open-map', label: 'Open Map', icon: MapPin, color: 'text-blue-600' }
     ]
   },
   {
     title: 'Navigation',
     nodes: [
-      { type: 'go-back', label: 'Go Back', icon: Zap, color: 'text-blue-600' },
-      { type: 'previous-item', label: 'Previous Item', icon: Zap, color: 'text-blue-600' },
-      { type: 'next-item', label: 'Next Item', icon: Zap, color: 'text-blue-600' }
+      { type: 'go-back', label: 'Go Back', icon: ArrowLeft, color: 'text-blue-600' },
+      { type: 'previous-item', label: 'Previous Item', icon: SkipBack, color: 'text-blue-600' },
+      { type: 'next-item', label: 'Next Item', icon: SkipForward, color: 'text-blue-600' }
     ]
   },
   {
     title: 'Database',
     nodes: [
-      { type: 'add-row', label: 'Add New Row', icon: Database, color: 'text-yellow-600' },
-      { type: 'modify-column', label: 'Modify Column', icon: Database, color: 'text-yellow-600' },
-      { type: 'delete-row', label: 'Delete Row', icon: Database, color: 'text-yellow-600' },
-      { type: 'duplicate-row', label: 'Duplicate Row', icon: Database, color: 'text-yellow-600' },
-      { type: 'open-update-form', label: 'Update Form', icon: Database, color: 'text-yellow-600' }
+      { type: 'add-row', label: 'Add New Row', icon: Plus, color: 'text-yellow-600' },
+      { type: 'modify-column', label: 'Modify Column', icon: Edit, color: 'text-yellow-600' },
+      { type: 'delete-row', label: 'Delete Row', icon: Trash2, color: 'text-yellow-600' },
+      { type: 'duplicate-row', label: 'Duplicate Row', icon: Copy, color: 'text-yellow-600' },
+      { type: 'open-update-form', label: 'Update Form', icon: Settings, color: 'text-yellow-600' }
     ]
   },
   {
     title: 'Values',
     nodes: [
-      { type: 'increment-value', label: 'Increment Value', icon: Zap, color: 'text-blue-600' },
-      { type: 'toggle-value', label: 'Toggle Value', icon: Zap, color: 'text-blue-600' }
+      { type: 'increment-value', label: 'Increment Value', icon: ArrowUp, color: 'text-blue-600' },
+      { type: 'toggle-value', label: 'Toggle Value', icon: ToggleLeft, color: 'text-blue-600' }
     ]
   },
   {
