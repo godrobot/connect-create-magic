@@ -71,29 +71,29 @@ const ActionNode = ({ data, selected, type, id, xPos, yPos, ...nodeProps }: any)
         onPlay={() => console.log('Run node', id)}
         onStop={() => console.log('Stop node', id)}
       >
-        <Card className={`p-2 min-w-[140px] border border-gray-300 bg-background shadow-sm relative rounded-lg`}>
+        <Card className={`p-1.5 min-w-[120px] border border-gray-300 bg-background shadow-sm relative rounded-lg`}>
           <Handle 
             type="target" 
             position={Position.Left} 
-            className="w-2 h-2 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
+            className="w-1.5 h-1.5 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
             onClick={handleHandleClick}
             onMouseDown={handleHandleClick}
           />
           <Handle 
             type="source" 
             position={Position.Right} 
-            className="w-2 h-2 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
+            className="w-1.5 h-1.5 !bg-gray-400 !border-0 hover:!bg-gray-600 transition-colors" 
             onClick={handleHandleClick}
             onMouseDown={handleHandleClick}
           />
           
-          <div className="flex items-center gap-2">
-            <div className={`p-1.5 ${bg} rounded`}>
-              <Icon className={`w-3 h-3 ${color}`} />
+          <div className="flex items-center gap-1.5">
+            <div className={`p-1 ${bg} rounded`}>
+              <Icon className={`w-2.5 h-2.5 ${color}`} />
             </div>
             <div>
-              <div className="font-medium text-xs leading-tight">{data.label}</div>
-              <div className="text-xs text-muted-foreground leading-tight mt-0.5 text-[10px]">
+              <div className="font-medium text-[10px] leading-tight">{data.label}</div>
+              <div className="text-[8px] text-muted-foreground leading-tight mt-0.5">
                 {type === 'email' && data.config?.to && `To: ${data.config.to}`}
                 {type === 'database' && data.config?.table && `Table: ${data.config.table}`}
                 {type === 'api' && data.config?.method && `${data.config.method} Request`}
@@ -109,14 +109,14 @@ const ActionNode = ({ data, selected, type, id, xPos, yPos, ...nodeProps }: any)
           className="absolute top-1/2 left-full transform -translate-y-1/2 flex items-center z-50"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="w-3 h-0.5 bg-gray-400"></div>
+          <div className="w-2 h-0.5 bg-gray-400"></div>
           <button
             onMouseDown={handleAddNode}
-            className="w-5 h-5 bg-gray-400 hover:bg-gray-500 text-white rounded-full flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
+            className="w-4 h-4 bg-gray-400 hover:bg-gray-500 text-white rounded-full flex items-center justify-center transition-colors cursor-pointer border-0 outline-none focus:outline-none"
             title="Add node"
             style={{ pointerEvents: 'auto' }}
           >
-            <Plus className="w-2.5 h-2.5" />
+            <Plus className="w-2 h-2" />
           </button>
         </div>
       )}
