@@ -71,7 +71,7 @@ const ActionNode = ({ data, selected, type, id, xPos, yPos, ...nodeProps }: any)
         onPlay={() => console.log('Run node', id)}
         onStop={() => console.log('Stop node', id)}
       >
-        <Card className={`p-3 min-w-[160px] border border-gray-300 bg-background shadow-sm relative rounded-lg`}>
+        <Card className={`p-4 min-w-[180px] border border-gray-300 bg-background shadow-sm relative rounded-lg`}>
           <Handle 
             type="target" 
             position={Position.Left} 
@@ -88,12 +88,12 @@ const ActionNode = ({ data, selected, type, id, xPos, yPos, ...nodeProps }: any)
           />
           
           <div className="flex items-center gap-3">
-            <div className={`p-2 ${bg} rounded-md`}>
-              <Icon className={`w-4 h-4 ${color}`} />
+            <div className={`p-2.5 ${bg} rounded-lg`}>
+              <Icon className={`w-5 h-5 ${color}`} />
             </div>
             <div>
               <div className="font-medium text-sm leading-tight">{data.label}</div>
-              <div className="text-xs text-muted-foreground leading-tight">
+              <div className="text-xs text-muted-foreground leading-tight mt-0.5">
                 {type === 'email' && data.config?.to && `To: ${data.config.to}`}
                 {type === 'database' && data.config?.table && `Table: ${data.config.table}`}
                 {type === 'api' && data.config?.method && `${data.config.method} Request`}

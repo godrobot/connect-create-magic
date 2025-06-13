@@ -48,7 +48,7 @@ const WebhookNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
         onPlay={() => console.log('Run webhook', id)}
         onStop={() => console.log('Stop webhook', id)}
       >
-        <Card className={`p-3 min-w-[160px] border border-gray-300 bg-background shadow-sm rounded-lg`}>
+        <Card className={`p-4 min-w-[180px] border border-gray-300 bg-background shadow-sm rounded-lg`}>
           <Handle 
             type="source" 
             position={Position.Right} 
@@ -58,12 +58,12 @@ const WebhookNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
           />
           
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-100 rounded-md">
-              <Webhook className="w-4 h-4 text-blue-600" />
+            <div className="p-2.5 bg-blue-100 rounded-lg">
+              <Webhook className="w-5 h-5 text-blue-600" />
             </div>
             <div>
               <div className="font-medium text-sm leading-tight">{data.label}</div>
-              <div className="text-xs text-muted-foreground leading-tight">
+              <div className="text-xs text-muted-foreground leading-tight mt-0.5">
                 {data.config?.method || 'POST'} {data.config?.url ? 'Configured' : 'Not configured'}
               </div>
             </div>

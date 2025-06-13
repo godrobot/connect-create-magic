@@ -67,7 +67,7 @@ const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) =>
         onPlay={() => console.log('Run condition', id)}
         onStop={() => console.log('Stop condition', id)}
       >
-        <Card className={`p-3 min-w-[160px] border border-gray-300 bg-background shadow-sm relative rounded-lg`}>
+        <Card className={`p-4 min-w-[180px] border border-gray-300 bg-background shadow-sm relative rounded-lg`}>
           <Handle 
             type="target" 
             position={Position.Left} 
@@ -95,18 +95,18 @@ const ConditionNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) =>
           />
           
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-orange-100 rounded-md">
-              <GitBranch className="w-4 h-4 text-orange-600" />
+            <div className="p-2.5 bg-orange-100 rounded-lg">
+              <GitBranch className="w-5 h-5 text-orange-600" />
             </div>
             <div>
               <div className="font-medium text-sm leading-tight">{data.label}</div>
-              <div className="text-xs text-muted-foreground leading-tight">
+              <div className="text-xs text-muted-foreground leading-tight mt-0.5">
                 {data.config?.operator} {data.config?.value}
               </div>
             </div>
           </div>
           
-          <div className="mt-2 flex justify-between text-xs">
+          <div className="mt-3 flex justify-between text-xs">
             <span className="text-green-600">True</span>
             <span className="text-red-600">False</span>
           </div>

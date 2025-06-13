@@ -48,7 +48,7 @@ const TriggerNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
         onPlay={() => console.log('Run trigger', id)}
         onStop={() => console.log('Stop trigger', id)}
       >
-        <Card className={`p-3 min-w-[160px] border border-gray-300 bg-background shadow-sm rounded-lg`}>
+        <Card className={`p-4 min-w-[180px] border border-gray-300 bg-background shadow-sm rounded-lg`}>
           <Handle 
             type="source" 
             position={Position.Right} 
@@ -58,19 +58,19 @@ const TriggerNode = ({ data, selected, id, xPos, yPos, ...nodeProps }: any) => {
           />
           
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-green-100 rounded-md">
-              <Zap className="w-4 h-4 text-green-600" />
+            <div className="p-2.5 bg-green-100 rounded-lg">
+              <Zap className="w-5 h-5 text-green-600" />
             </div>
             <div>
               <div className="font-medium text-sm leading-tight">{data.label}</div>
-              <div className="text-xs text-muted-foreground leading-tight">
+              <div className="text-xs text-muted-foreground leading-tight mt-0.5">
                 {data.config?.event === 'schedule' ? 'Scheduled' : 'Manual'}
               </div>
             </div>
           </div>
           
           {data.config?.interval && (
-            <div className="mt-2 text-xs text-muted-foreground flex items-center gap-1">
+            <div className="mt-3 text-xs text-muted-foreground flex items-center gap-2">
               <Zap className="w-3 h-3" />
               Every {data.config.interval}
             </div>
