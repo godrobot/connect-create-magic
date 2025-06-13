@@ -2,9 +2,9 @@ import { Node, Edge } from '@xyflow/react';
 import { PendingConnection } from '../types/workflow';
 import { getReactFlowNodeType, getNodeLabel, getDefaultConfig } from './nodeConfig';
 
-const NODE_WIDTH = 120; // Approximate node width
-const NODE_HEIGHT = 60; // Approximate node height
-const SPACING = 30; // Minimum spacing between nodes
+const NODE_WIDTH = 140; // Increased from 120 to be more accurate
+const NODE_HEIGHT = 80; // Increased from 60 to be more accurate
+const SPACING = 50; // Increased spacing between nodes
 
 const findAvailablePosition = (
   preferredPosition: { x: number; y: number },
@@ -15,7 +15,7 @@ const findAvailablePosition = (
       const nodeX = node.position.x;
       const nodeY = node.position.y;
       
-      // Check if positions overlap (with some padding)
+      // Check if positions overlap with proper spacing
       return (
         pos.x < nodeX + NODE_WIDTH + SPACING &&
         pos.x + NODE_WIDTH + SPACING > nodeX &&
@@ -32,41 +32,33 @@ const findAvailablePosition = (
     return testPosition;
   }
   
-  // Try positions in a more systematic grid pattern
-  const maxAttempts = 50;
+  // Try positions in a more systematic grid pattern with better spacing
+  const maxAttempts = 100; // Increased attempts
   let attempt = 0;
   
   while (attempt < maxAttempts) {
-    const row = Math.floor(attempt / 5);
-    const col = attempt % 5;
+    const spiralRadius = Math.floor(attempt / 8) + 1;
+    const angleStep = (Math.PI * 2) / 8;
+    const angle = (attempt % 8) * angleStep;
+    
+    const offsetX = Math.cos(angle) * spiralRadius * (NODE_WIDTH + SPACING);
+    const offsetY = Math.sin(angle) * spiralRadius * (NODE_HEIGHT + SPACING);
     
     testPosition = {
-      x: preferredPosition.x + col * (NODE_WIDTH + SPACING),
-      y: preferredPosition.y + row * (NODE_HEIGHT + SPACING)
+      x: preferredPosition.x + offsetX,
+      y: preferredPosition.y + offsetY
     };
     
     if (!isPositionOccupied(testPosition)) {
       return testPosition;
     }
     
-    // Also try negative positions
-    if (col > 0) {
-      testPosition = {
-        x: preferredPosition.x - col * (NODE_WIDTH + SPACING),
-        y: preferredPosition.y + row * (NODE_HEIGHT + SPACING)
-      };
-      
-      if (!isPositionOccupied(testPosition)) {
-        return testPosition;
-      }
-    }
-    
     attempt++;
   }
   
-  // Fallback: if all positions are occupied, place it far to the right
+  // Fallback: place it far to the right with more spacing
   return {
-    x: preferredPosition.x + 3 * (NODE_WIDTH + SPACING),
+    x: preferredPosition.x + 5 * (NODE_WIDTH + SPACING),
     y: preferredPosition.y
   };
 };
